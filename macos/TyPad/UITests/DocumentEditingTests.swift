@@ -19,7 +19,9 @@ final class DocumentEditingTests: XCTestCase {
         let newDocument = app.menuItems["newDocument:"]
         XCTAssertTrue(newDocument.waitForExistence(timeout: 5))
         XCTAssertTrue(newDocument.isEnabled, "New must be enabled from the welcome window")
-        newDocument.click()
+        // Keep the keyboard shortcut under test as well as menu availability.
+        app.typeKey(.escape, modifierFlags: [])
+        app.typeKey("n", modifierFlags: .command)
         let editor = app.textViews["typst.source-editor"].firstMatch
         XCTAssertTrue(editor.waitForExistence(timeout: 15), "New must create a document editor\n\(app.debugDescription)")
         let original = try XCTUnwrap(editor.value as? String)
