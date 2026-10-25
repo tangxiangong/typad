@@ -4,7 +4,11 @@ TyPad 的 CI 当前覆盖共享 Rust 代码和正在开发的 macOS 客户端，
 
 ## 检查内容
 
-当前流水线分为两个任务，均运行在 macOS 上。其他平台的构建和原生测试会随对应客户端加入。
+当前流水线分为两个任务，均运行在 `xcode-27` Apple Silicon runner 上，通过 `DEVELOPER_DIR=/Applications/Xcode_27.app/Contents/Developer` 明确选择稳定版 Xcode 27.0（27A266a）。每个任务都会输出宿主系统、架构、Xcode、Swift 和 macOS SDK 信息。其他平台的构建和原生测试会随对应客户端加入。
+
+`glassEffect` 等 API 即使有运行时可用性判断，也需要包含这些 API 的新 SDK 才能编译。最低部署版本仍为 macOS 13，Universal 构建仍包含 arm64 和 x86_64，旧系统继续使用原生材质回退。新 runner 上的 GUI 测试只验证当前 Apple Silicon 宿主，不代表已在 macOS 13 或 Intel 实机完成运行验收。
+
+工具链依据：[GitHub runner 镜像清单](https://github.com/actions/runner-images/blob/main/images/macos/xcode-27-arm64-Readme.md)、[Apple Xcode 支持范围](https://developer.apple.com/xcode/system-requirements)。
 
 | 任务 | 内容 |
 | --- | --- |

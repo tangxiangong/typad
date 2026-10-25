@@ -16,16 +16,28 @@ env:
   CARGO_TERM_COLOR: always
   RUST_BACKTRACE: 1
   CARGO_BUILD_JOBS: 3
+  # Pin the stable Xcode 27.0 installation, not the image default or a beta.
+  DEVELOPER_DIR: /Applications/Xcode_27.app/Contents/Developer
 
 jobs:
   rust:
     name: Rust tests and static checks
-    runs-on: macos-15
+    runs-on: xcode-27
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v6
         with:
           persist-credentials: false
+      - name: Report selected Apple toolchain
+        run: |
+          test -d "$DEVELOPER_DIR"
+          sw_vers
+          uname -m
+          xcodebuild -version
+          xcrun --find swiftc
+          xcrun swiftc --version
+          xcrun --sdk macosx --show-sdk-path
+          xcrun --sdk macosx --show-sdk-version
       - name: Install Rust
         run: |
           rustup toolchain install stable --profile minimal --component rustfmt --component clippy
@@ -49,18 +61,27 @@ jobs:
   gui:
     name: Universal app and native GUI tests
     needs: rust
-    runs-on: macos-15
+    runs-on: xcode-27
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v6
         with:
           persist-credentials: false
+      - name: Report selected Apple toolchain
+        run: |
+          test -d "$DEVELOPER_DIR"
+          sw_vers
+          uname -m
+          xcodebuild -version
+          xcrun --find swiftc
+          xcrun swiftc --version
+          xcrun --sdk macosx --show-sdk-path
+          xcrun --sdk macosx --show-sdk-version
       - name: Install Rust and Apple targets
         run: |
           rustup toolchain install stable --profile minimal
           rustup default stable
           rustup target add aarch64-apple-darwin x86_64-apple-darwin
-          xcodebuild -version
       - uses: actions/cache@v5
         with:
           path: |
