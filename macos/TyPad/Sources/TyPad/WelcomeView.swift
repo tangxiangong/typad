@@ -30,6 +30,7 @@ struct WelcomeView: View {
                     Button { NSDocumentController.shared.newDocument(nil) } label: {
                         action("New document", subtitle: "Start with a blank Typst document", icon: "doc.badge.plus")
                     }
+                    .keyboardShortcut("n", modifiers: .command)
                 }
                 .buttonStyle(.plain).padding(.horizontal, 24)
                 Spacer(minLength: 24)
