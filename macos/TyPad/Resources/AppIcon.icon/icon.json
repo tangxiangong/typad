@@ -1,0 +1,70 @@
+{
+  "fill": {
+    "solid": "srgb:0.96863,0.96078,0.93725,1.00000"
+  },
+  "groups": [
+    {
+      "layers": [
+        {
+          "glass": false,
+          "image-name": "06-Highlights.svg",
+          "name": "06-Highlights"
+        },
+        {
+          "glass": false,
+          "image-name": "05-Curved-Tail.svg",
+          "name": "05-Curved-Tail"
+        },
+        {
+          "glass": false,
+          "image-name": "04-Top-Fold.svg",
+          "name": "04-Top-Fold"
+        },
+        {
+          "glass": false,
+          "image-name": "03-Main-Glyph.svg",
+          "name": "03-Main-Glyph"
+        }
+      ],
+      "shadow": {
+        "kind": "neutral",
+        "opacity": 0.25
+      },
+      "specular": false,
+      "translucency": {
+        "enabled": false,
+        "value": 0.3
+      },
+      "name": "Folded Typst Glyph"
+    },
+    {
+      "layers": [
+        {
+          "glass": false,
+          "image-name": "02-Construction-Marks.svg",
+          "name": "02-Circle-and-Point"
+        },
+        {
+          "glass": false,
+          "image-name": "01-Paper.svg",
+          "name": "01-Paper"
+        }
+      ],
+      "shadow": {
+        "kind": "none",
+        "opacity": 0.5
+      },
+      "specular": false,
+      "translucency": {
+        "enabled": false,
+        "value": 0.3
+      },
+      "name": "Paper & Geometry"
+    }
+  ],
+  "supported-platforms": {
+    "squares": [
+      "macOS"
+    ]
+  }
+}

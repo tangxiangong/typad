@@ -1,0 +1,28 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Icon Composer Export &#226;&#128;&#148; Temporary">
+<g id="Curved Tail">
+<g id="Rising paper curl &#226;&#128;&#162; cyan to lake blue">
+<path d="M524 578C535 661 580 718 655 723C715 729 755 693 772 645C768 718 743 778 695 816C665 834 635 835 607 825C552 806 524 757 524 688V578Z" fill="url(#paint0_linear_36_2)"/>
+<path d="M524 578C535 661 580 718 655 723C715 729 755 693 772 645C768 718 743 778 695 816C665 834 635 835 607 825C552 806 524 757 524 688V578Z" fill="url(#paint1_radial_36_2)"/>
+<path d="M524 578C535 661 580 718 655 723C715 729 755 693 772 645C768 718 743 778 695 816C665 834 635 835 607 825C552 806 524 757 524 688V578Z" fill="url(#paint2_radial_36_2)"/>
+</g>
+</g>
+</g>
+<defs>
+<linearGradient id="paint0_linear_36_2" x1="532" y1="620" x2="758.783" y2="801.267" gradientUnits="userSpaceOnUse">
+<stop stop-color="#A7E6D9"/>
+<stop offset="0.28" stop-color="#79D1D3"/>
+<stop offset="0.65" stop-color="#3BAFC0"/>
+<stop offset="1" stop-color="#2997A8"/>
+</linearGradient>
+<radialGradient id="paint1_radial_36_2" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(780 730) scale(100 180)">
+<stop stop-color="#1B7F8C" stop-opacity="0.24"/>
+<stop offset="1" stop-color="#1B7F8C" stop-opacity="0"/>
+</radialGradient>
+<radialGradient id="paint2_radial_36_2" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(537 667) scale(156 190)">
+<stop stop-color="#D1F1ED" stop-opacity="0.48"/>
+<stop offset="0.54" stop-color="#A7E6D9" stop-opacity="0.1"/>
+<stop offset="1" stop-color="#A7E6D9" stop-opacity="0"/>
+</radialGradient>
+</defs>
+</svg>

@@ -1,0 +1,35 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Icon Composer Export &#226;&#128;&#148; Temporary">
+<g id="Main Glyph">
+<g id="Sculpted t &#226;&#128;&#162; custom B&#195;&#169;zier outline">
+<path d="M232 380C260 369 292 362 324 363C391 362 450 416 487 505C505 547 518 590 524 638V671C524 754 555 808 612 825C687 850 751 760 772 645C770 777 683 877 548 877C416 877 335 815 335 687V423C335 377 289 361 232 380Z" fill="url(#paint0_linear_36_2)"/>
+<path d="M232 380C260 369 292 362 324 363C391 362 450 416 487 505C505 547 518 590 524 638V671C524 754 555 808 612 825C687 850 751 760 772 645C770 777 683 877 548 877C416 877 335 815 335 687V423C335 377 289 361 232 380Z" fill="url(#paint1_radial_36_2)"/>
+<path d="M232 380C260 369 292 362 324 363C391 362 450 416 487 505C505 547 518 590 524 638V671C524 754 555 808 612 825C687 850 751 760 772 645C770 777 683 877 548 877C416 877 335 815 335 687V423C335 377 289 361 232 380Z" fill="url(#paint2_radial_36_2)"/>
+<path d="M232 380C260 369 292 362 324 363C391 362 450 416 487 505C505 547 518 590 524 638V671C524 754 555 808 612 825C687 850 751 760 772 645C770 777 683 877 548 877C416 877 335 815 335 687V423C335 377 289 361 232 380Z" fill="url(#paint3_radial_36_2)"/>
+</g>
+</g>
+</g>
+<defs>
+<linearGradient id="paint0_linear_36_2" x1="337" y1="390" x2="462.85" y2="889.064" gradientUnits="userSpaceOnUse">
+<stop stop-color="#1B7F8C"/>
+<stop offset="0.42" stop-color="#258F99"/>
+<stop offset="0.82" stop-color="#2A9EA6"/>
+<stop offset="1" stop-color="#37ABB1"/>
+</linearGradient>
+<radialGradient id="paint1_radial_36_2" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(650 813) scale(164 106)">
+<stop stop-color="#156F7E" stop-opacity="0.48"/>
+<stop offset="0.5" stop-color="#1B7F8C" stop-opacity="0.15"/>
+<stop offset="1" stop-color="#1B7F8C" stop-opacity="0"/>
+</radialGradient>
+<radialGradient id="paint2_radial_36_2" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(325 375) scale(200 140)">
+<stop stop-color="#145D68" stop-opacity="0.52"/>
+<stop offset="0.55" stop-color="#1B7F8C" stop-opacity="0.12"/>
+<stop offset="1" stop-color="#1B7F8C" stop-opacity="0"/>
+</radialGradient>
+<radialGradient id="paint3_radial_36_2" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(512 535) scale(142 295)">
+<stop stop-color="#155D6B" stop-opacity="0.64"/>
+<stop offset="0.55" stop-color="#1B7F8C" stop-opacity="0.14"/>
+<stop offset="1" stop-color="#1B7F8C" stop-opacity="0"/>
+</radialGradient>
+</defs>
+</svg>

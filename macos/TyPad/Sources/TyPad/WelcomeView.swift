@@ -14,9 +14,8 @@ struct WelcomeView: View {
     var body: some View {
         HStack(spacing: 0) {
             VStack(spacing: 0) {
-                Image("TyPadMark").renderingMode(.template).resizable().scaledToFit()
+                Image("TyPadMark").renderingMode(.original).resizable().scaledToFit()
                     .frame(width: 128, height: 128)
-                    .foregroundStyle(.tertiary)
                     .accessibilityHidden(true)
                     .frame(height: 162).padding(.top, 22)
                 Text("TyPad").font(.system(size: 22, weight: .medium))
