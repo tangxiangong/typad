@@ -14,8 +14,15 @@ options=(-project macos/TyPad.xcodeproj -scheme TyPad -configuration Debug
     CODE_SIGN_IDENTITY=- CODE_SIGNING_ALLOWED=YES)
 xcodebuild "${options[@]}" 'ARCHS=arm64 x86_64' ONLY_ACTIVE_ARCH=NO \
     build-for-testing 2>&1 | tee "target/ci-results/build-$run_id.log"
-xcrun lipo target/ci-xcode/Build/Products/Debug/TyPad.app/Contents/MacOS/TyPad \
-    -verify_arch arm64 x86_64
+app_binary=target/ci-xcode/Build/Products/Debug/TyPad.app/Contents/MacOS/TyPad
+architectures="$(xcrun lipo -archs "$app_binary")"
+echo "Application architectures: $architectures"
+for required_arch in arm64 x86_64; do
+    case " $architectures " in
+        *" $required_arch "*) ;;
+        *) echo "Missing required architecture: $required_arch" >&2; exit 1;;
+    esac
+done
 xcodebuild "${options[@]}" test-without-building \
     -parallel-testing-enabled NO \
     -resultBundlePath "target/ci-results/gui-$run_id.xcresult" \
