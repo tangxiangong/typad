@@ -20,7 +20,10 @@ struct PDFPreview: NSViewRepresentable {
         view.displayDirection = .vertical
         view.displaysPageBreaks = true
         view.autoScales = true
+        view.setAccessibilityElement(true)
+        view.setAccessibilityRole(.group)
         view.setAccessibilityLabel(String(localized: "Typeset PDF preview"))
+        view.setAccessibilityIdentifier("typst.pdf-preview")
         return view
     }
 
@@ -36,6 +39,7 @@ struct PDFPreview: NSViewRepresentable {
             CATransaction.begin()
             CATransaction.setDisableActions(true)
             view.document = PDFDocument(data: data)
+            view.setAccessibilityValue(view.document?.string ?? "")
             if let document = view.document, document.pageCount > 0,
                let page = document.page(at: min(oldPage, document.pageCount - 1)) {
                 if let destination {

@@ -78,11 +78,11 @@ struct EditorView: View {
             }
         }
         .onAppear { preview.worker.reopen(); compile() }
-        .onChange(of: document.source) { _ in dismissAssistance(); compile() }
-        .onChange(of: fileURL) { _ in dismissAssistance(); compile() }
-        .onChange(of: cursor) { _ in dismissAssistance() }
-        .onChange(of: layout) { _ in dismissAssistance() }
-        .onChange(of: automatic) { _ in compile() }
+        .onChange(of: document.source) { dismissAssistance(); compile() }
+        .onChange(of: fileURL) { dismissAssistance(); compile() }
+        .onChange(of: cursor) { dismissAssistance() }
+        .onChange(of: layout) { dismissAssistance() }
+        .onChange(of: automatic) { compile() }
         .onDisappear { dismissAssistance(); preview.stop() }
         .task(id: document.source) {
             let source = document.source

@@ -1,19 +1,24 @@
 # Repository instructions
 
-## Run the complete CI checks before committing
+## Select local checks by the changed code and use arm64
 
-- When the user asks to run CI tests, or to test before committing, run every check in `.github/workflows/tests.yml` locally. Do not reduce the requested scope to logic tests, static checks, or a host-only build.
-- The complete set of checks is:
+- Local builds and tests only need the arm64 architecture. Build or test x86_64 and Universal binaries locally only when the user explicitly requests them.
+- This arm64-only policy applies to local verification. Keep remote CI's existing Universal architecture coverage unless the user explicitly requests a CI change.
+- For Swift, Xcode configuration, or macOS resource changes, start with `bash ci/check-macos.sh` and the affected arm64 Swift type check or build. Do not run Rust formatting, Clippy, or Rust tests when Rust code and its dependencies are unchanged.
+- Run existing GUI cases when the changed behavior requires them and the user has authorized application automation. GUI tests must not synthesize keyboard input, use `typeText` or `typeKey`, switch the system input method, or open System Settings. Use menu actions and clipboard content for text editing; preserve and restore the clipboard unless the user has changed it during the test.
+- For Rust changes, run Rust formatting, Clippy, and the relevant Rust tests. Expand to the full workspace when the change affects shared behavior.
+- The existing GUI editing test must paste Chinese, English, and simple math into the application and automatically verify all three in its rendered preview, including after redo. Use menu actions without keyboard synthesis.
+- Only an explicit request for the complete CI suite requires every check in `.github/workflows/tests.yml`. The complete local set is:
 
   ```sh
   cargo fmt --all -- --check
   cargo clippy --workspace --all-targets --locked -- -D warnings
   cargo test --workspace --locked
   bash ci/check-macos.sh
-  bash ci/test-gui.sh
+  bash ci/test-gui.sh --arm64
   ```
 
-- `ci/test-gui.sh` must complete the Universal arm64/x86_64 application and test-runner build, verify both application architectures, and execute all XCUITest cases. Building alone does not count as running the GUI tests.
+- `ci/test-gui.sh --arm64` must complete the arm64 application and test-runner build, verify the arm64 application architecture, and execute all XCUITest cases. Building alone does not count as running the GUI tests.
 - Additional checks such as `bash ci/check-worker.sh` supplement the CI checks; they do not replace any CI task.
 - Keep following the current workflow if CI changes. Report exactly which checks passed, failed, or could not run. Do not claim that all tests passed when any required check was skipped or blocked.
 - Commit only after every requested check passes. Investigate and fix failures within the authorized scope, then rerun the affected checks. If an essential prerequisite is unavailable, state the concrete blocker and leave the changes uncommitted.

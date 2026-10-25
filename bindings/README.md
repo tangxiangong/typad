@@ -14,6 +14,8 @@
 
 当前 Swift 模块名为 `TyPadCore`，底层 C 模块名为 `TyPadCoreFFI`。例如，`SourceSummary` 定义在服务层，再由 FFI 层声明为 UniFFI remote record，因此服务层本身不需要依赖 UniFFI。
 
+`crates/typad-ffi/uniffi.toml` 是 crate 级配置，由 UniFFI 通过 Cargo 元数据自动发现并加载。UniFFI 0.32 的 `--config` 参数用于包含 `[defaults]`、`[crates.<name>]` 或 `[crate-roots]` 的全局配置，不能直接传入这个 crate 级文件。
+
 修改接口时，先更新 Rust 服务和数据类型，再同步 FFI 声明。下一次 Xcode 构建会重新生成 Swift 接口。生成文件位于 DerivedData，不纳入源码管理。
 
 ## 手动生成

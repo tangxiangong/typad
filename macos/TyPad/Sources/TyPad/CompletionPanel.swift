@@ -33,7 +33,7 @@ struct CompletionPanel: View {
                         }
                     }
                     .frame(height: CGFloat(min(items.count, 7)) * 25)
-                    .onChange(of: selected) { value in proxy.scrollTo(value, anchor: .center) }
+                    .onChange(of: selected) { _, value in proxy.scrollTo(value, anchor: .center) }
                 }
                 if items.indices.contains(selected), !items[selected].detail.isEmpty {
                     Divider()

@@ -12,5 +12,4 @@ if [[ ! -f "$library" ]]; then
 fi
 root="$(cd "$(dirname "$0")/.." && pwd)"
 cargo run --locked --manifest-path "$root/Cargo.toml" -p typad-bindgen -- \
-    generate --library "$library" --language swift --no-format --out-dir "$destination" \
-    --config "$root/crates/typad-ffi/uniffi.toml"
+    generate --library "$library" --language swift --no-format --out-dir "$destination"

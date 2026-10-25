@@ -49,10 +49,11 @@ Debug 和 Release 使用独立的应用标识。当前还没有正式安装包�
 
 ```sh
 bash ci/check-macos.sh  # Swift 语法、shell、plist 和 scheme 检查
-bash ci/test-gui.sh     # Universal 测试构建并运行原生 GUI 测试
+# 仅在需要验证 GUI 行为且已获授权时运行：
+bash ci/test-gui.sh --arm64  # arm64 构建及现有 GUI 用例，不模拟键盘输入
 ```
 
-GUI 测试会启动并操作应用，适合在独立测试环境执行。测试日志和 `.xcresult` 保存在 `target/ci-results`。完整说明见[测试 CI](../ci/README.md)。
+仅修改 Swift 或 macOS 配置时，不运行无关的 Rust 检查。GUI 用例通过编辑菜单粘贴包含中文、英文和简单数学公式的源码，自动验证应用预览及撤销、重做后的内容，保留系统当前输入法，结束后恢复剪贴板。GUI 测试会启动并操作应用，适合在独立测试环境执行。测试日志和 `.xcresult` 保存在 `target/ci-results`。完整说明见[测试 CI](../ci/README.md)。
 
 目前支持 `.typ` 文档的新建、编辑和保存，以及内嵌 Typst 自动/手动编译和 PDFKit 并排预览。`⌘B` 编译、`⌘F` 打开查找替换；编译错误可跳转当前文档，失败时保留最后成功的 PDF。完整项目管理和完整语义高亮仍在计划中。本轮未新增或运行 GUI 自动化。功能计划见[Roadmap](../ROADMAP.md)。
 
@@ -62,4 +63,4 @@ GUI 测试会启动并操作应用，适合在独立测试环境执行。测试�
 
 `bash ci/check-worker.sh` 运行宿主逻辑检查，覆盖真实 PDF、Tinymist 补全、Unicode 范围、文档信息，以及强制崩溃/持续崩溃/超时后的恢复。它不会启动 GUI。
 
-UI 使用中英文 String Catalog；macOS 26 的补全面板使用系统 Liquid Glass。已在本机 Apple Silicon、macOS 27.0.1 和 Xcode 27.1 下通过 Universal 2 构建、双架构校验、现有 XCUITest（从欢迎页新建空白文档、键盘编辑、撤销和重做），以及宿主逻辑与静态检查。
+UI 使用中英文 String Catalog；macOS 26 的补全面板使用系统 Liquid Glass。已在本机 Apple Silicon、macOS 27.0.1 和 Xcode 27.1 下通过 Universal 2 构建、双架构校验、文档新建与编辑的既有 XCUITest，以及宿主逻辑与静态检查。当前用例通过编辑菜单验证中文、英文和数学公式的应用内预览、撤销和重做。
