@@ -1,0 +1,27 @@
+[workspace]
+members = [
+    "crates/typad-core",
+    "crates/typad-service",
+    "crates/typad-ffi",
+    "bindings/generator",
+    "xtask",
+]
+default-members = ["crates/typad-core"]
+resolver = "3"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+authors = ["tangxiangong <tangxiangong@gmail.com>"]
+
+[workspace.dependencies]
+typad-core = { path = "crates/typad-core" }
+typad-service = { path = "crates/typad-service" }
+uniffi = "0.32"
+typst = "=0.15.1"
+typst-pdf = "=0.15.1"
+typst-kit = { version = "=0.15.1", features = ["embedded-fonts", "scan-fonts", "datetime"] }
+
+[workspace.lints.rust]
+unsafe_code = "forbid"

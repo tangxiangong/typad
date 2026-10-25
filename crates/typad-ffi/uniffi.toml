@@ -1,0 +1,4 @@
+[bindings.swift]
+module_name = "TyPadCore"
+ffi_module_name = "TyPadCoreFFI"
+generate_module_map = true

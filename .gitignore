@@ -1,0 +1,8 @@
+/target/
+/dist/
+/bindings/generated/
+.ast-bro/
+.DS_Store
+xcuserdata/
+*.xcuserstate
+.codex/
