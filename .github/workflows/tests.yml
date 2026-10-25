@@ -20,7 +20,8 @@ env:
 jobs:
   rust:
     name: Rust tests and static checks
-    runs-on: macos-15
+    # The Xcode 27 runner image runs macOS 27.
+    runs-on: xcode-27
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v6
@@ -49,7 +50,8 @@ jobs:
   gui:
     name: Universal app and native GUI tests
     needs: rust
-    runs-on: macos-15
+    # The Xcode 27 runner image runs macOS 27.
+    runs-on: xcode-27
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v6

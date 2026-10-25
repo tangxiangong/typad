@@ -8,13 +8,13 @@ final class DocumentEditingTests: XCTestCase {
         app.launch()
         defer { app.terminate() }
 
-        // DocumentGroup can initially show the system document picker.
-        app.typeKey(.escape, modifierFlags: [])
-        app.typeKey("n", modifierFlags: .command)
+        let newDocument = app.buttons["welcome.new-document"].firstMatch
+        XCTAssertTrue(newDocument.waitForExistence(timeout: 15))
+        newDocument.click()
         let editor = app.textViews["typst.source-editor"].firstMatch
         XCTAssertTrue(editor.waitForExistence(timeout: 15), "New must create a document editor")
         let original = try XCTUnwrap(editor.value as? String)
-        XCTAssertTrue(original.contains("= Untitled"), "The new document comes from the Rust service")
+        XCTAssertEqual(original, "", "New documents start with a blank Typst source")
 
         editor.click()
         app.typeKey(.downArrow, modifierFlags: .command)

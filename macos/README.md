@@ -62,4 +62,4 @@ GUI 测试会启动并操作应用，适合在独立测试环境执行。测试�
 
 `bash ci/check-worker.sh` 运行宿主逻辑检查，覆盖真实 PDF、Tinymist 补全、Unicode 范围、文档信息，以及强制崩溃/持续崩溃/超时后的恢复。它不会启动 GUI。
 
-UI 使用中英文 String Catalog；macOS 26 的补全面板使用系统 Liquid Glass。已进行本机 arm64 Xcode 构建与实际窗口检查，未新增或运行 GUI 自动化测试。
+UI 使用中英文 String Catalog；macOS 26 的补全面板使用系统 Liquid Glass。已在本机 Apple Silicon、macOS 27.0.1 和 Xcode 27.1 下通过 Universal 2 构建、双架构校验、现有 XCUITest（从欢迎页新建空白文档、键盘编辑、撤销和重做），以及宿主逻辑与静态检查。

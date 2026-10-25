@@ -4,16 +4,16 @@ TyPad 的 CI 当前覆盖共享 Rust 代码和正在开发的 macOS 客户端，
 
 ## 检查内容
 
-当前流水线分为两个任务，均运行在 macOS 上。其他平台的构建和原生测试会随对应客户端加入。
+当前流水线分为两个任务，均使用 GitHub Actions 的 `xcode-27` runner，在 macOS 27 和 Xcode 27 环境中运行。其他平台的构建和原生测试会随对应客户端加入。
 
 | 任务 | 内容 |
 | --- | --- |
 | Rust tests and static checks | Rust 格式、整个 workspace 的 Clippy、单元/集成/文档测试，以及脚本、plist、scheme 和 Swift 语法检查 |
 | Universal app and native GUI tests | 前一个任务通过后，构建 Universal 2 应用和测试 runner，检查应用包含 arm64、x86_64，再运行 XCUITest |
 
-当前 GUI 用例验证新建文档的初始内容、键盘编辑、撤销和重做。随着产品功能增加，测试将扩展到保存与重开、项目导航、编译、预览定位和导出。
+当前 GUI 用例验证从欢迎页新建空白文档、键盘编辑、撤销和重做。随着产品功能增加，测试将扩展到保存与重开、项目导航、编译、预览定位和导出。
 
-本地 Rust 测试和静态检查已通过；首次远端 CI、完整 Universal 测试构建和 GUI 执行尚未验证。
+本地已在 Apple Silicon、macOS 27.0.1 和 Xcode 27.1 下通过全部 CI 检查，包括 Rust 格式、Clippy、单元/集成/文档测试、原生静态检查、完整 Universal 2 测试构建、双架构校验和 XCUITest。远端 CI 运行尚未验证。
 
 ## 在本地检查
 
