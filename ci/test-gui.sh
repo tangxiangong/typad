@@ -14,8 +14,8 @@ options=(-project macos/TyPad.xcodeproj -scheme TyPad -configuration Debug
     CODE_SIGN_IDENTITY=- CODE_SIGNING_ALLOWED=YES)
 xcodebuild "${options[@]}" 'ARCHS=arm64 x86_64' ONLY_ACTIVE_ARCH=NO \
     build-for-testing 2>&1 | tee "target/ci-results/build-$run_id.log"
-xcrun lipo -verify_arch arm64 x86_64 \
-    target/ci-xcode/Build/Products/Debug/TyPad.app/Contents/MacOS/TyPad
+xcrun lipo target/ci-xcode/Build/Products/Debug/TyPad.app/Contents/MacOS/TyPad \
+    -verify_arch arm64 x86_64
 xcodebuild "${options[@]}" test-without-building \
     -parallel-testing-enabled NO \
     -resultBundlePath "target/ci-results/gui-$run_id.xcresult" \
