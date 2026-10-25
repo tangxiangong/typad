@@ -5,10 +5,43 @@
     "objectVersion" = "56";
     "archiveVersion" = "1";
     "objects" = {
+        "AABBCC012345678900000051" = { "isa" = "PBXFileReference"; "path" = "TyPad/Resources/Assets.xcassets"; "lastKnownFileType" = "folder.assetcatalog"; "sourceTree" = "SOURCE_ROOT"; };
+        "AABBCC012345678900000052" = { "isa" = "PBXBuildFile"; "fileRef" = "AABBCC012345678900000051"; };
+        "AABBCC012345678900000041" = { "isa" = "PBXFileReference"; "path" = "TyPad/Resources/Localizable.xcstrings"; "lastKnownFileType" = "text.json.xcstrings"; "sourceTree" = "SOURCE_ROOT"; };
+        "AABBCC012345678900000042" = { "isa" = "PBXBuildFile"; "fileRef" = "AABBCC012345678900000041"; };
+        "AABBCC012345678900000043" = { "isa" = "PBXResourcesBuildPhase"; "buildActionMask" = "2147483647"; "files" = ("AABBCC012345678900000042", "AABBCC012345678900000052"); "runOnlyForDeploymentPostprocessing" = "0"; };
+        "AABBCC012345678900000031" = { "isa" = "PBXFileReference"; "path" = "TyPad/Sources/TyPad/SourceRuler.swift"; "lastKnownFileType" = "sourcecode.swift"; "sourceTree" = "SOURCE_ROOT"; };
+        "AABBCC012345678900000032" = { "isa" = "PBXBuildFile"; "fileRef" = "AABBCC012345678900000031"; };
+        "AABBCC012345678900000021" = { "isa" = "PBXFileReference"; "path" = "TyPad/Sources/TyPad/WorkspaceSidebar.swift"; "lastKnownFileType" = "sourcecode.swift"; "sourceTree" = "SOURCE_ROOT"; };
+        "AABBCC012345678900000022" = { "isa" = "PBXBuildFile"; "fileRef" = "AABBCC012345678900000021"; };
+        "AABBCC012345678900000011" = { "isa" = "PBXFileReference"; "path" = "TyPad/Sources/TyPad/CompletionPanel.swift"; "lastKnownFileType" = "sourcecode.swift"; "sourceTree" = "SOURCE_ROOT"; };
+        "AABBCC012345678900000012" = { "isa" = "PBXBuildFile"; "fileRef" = "AABBCC012345678900000011"; };
+        "AABBCC012345678900000001" = { "isa" = "PBXFileReference"; "path" = "TyPad/Sources/TyPad/WelcomeView.swift"; "lastKnownFileType" = "sourcecode.swift"; "sourceTree" = "SOURCE_ROOT"; };
+        "AABBCC012345678900000002" = { "isa" = "PBXBuildFile"; "fileRef" = "AABBCC012345678900000001"; };
+        "FEDCBA012345678900000099" = {
+            "isa" = "PBXShellScriptBuildPhase";
+            "name" = "Embed TyPad Worker";
+            "buildActionMask" = "2147483647";
+            "shellPath" = "/bin/bash";
+            "shellScript" = "bash \"$SRCROOT/embed-worker.sh\"";
+            "inputPaths" = ("$(TYPAD_BINDINGS_DIR)/typad-worker");
+            "outputPaths" = ("$(TARGET_BUILD_DIR)/$(EXECUTABLE_FOLDER_PATH)/typad-worker");
+            "runOnlyForDeploymentPostprocessing" = "0";
+        };
+        "FEDCBA012345678900000011" = { "isa" = "PBXFileReference"; "path" = "TyPad/Sources/TyPad/LanguageModel.swift"; "lastKnownFileType" = "sourcecode.swift"; "sourceTree" = "SOURCE_ROOT"; };
+        "FEDCBA012345678900000012" = { "isa" = "PBXBuildFile"; "fileRef" = "FEDCBA012345678900000011"; };
+        "FEDCBA012345678900000001" = { "isa" = "PBXFileReference"; "path" = "TyPad/Sources/TyPad/WorkerClient.swift"; "lastKnownFileType" = "sourcecode.swift"; "sourceTree" = "SOURCE_ROOT"; };
+        "FEDCBA012345678900000002" = { "isa" = "PBXBuildFile"; "fileRef" = "FEDCBA012345678900000001"; };
+        "ABCDEF012345678900000021" = { "isa" = "PBXFileReference"; "path" = "TyPad/Sources/TyPad/PDFPreview.swift"; "lastKnownFileType" = "sourcecode.swift"; "sourceTree" = "SOURCE_ROOT"; };
+        "ABCDEF012345678900000022" = { "isa" = "PBXBuildFile"; "fileRef" = "ABCDEF012345678900000021"; };
+        "ABCDEF012345678900000011" = { "isa" = "PBXFileReference"; "path" = "TyPad/Sources/TyPad/SourceEditor.swift"; "lastKnownFileType" = "sourcecode.swift"; "sourceTree" = "SOURCE_ROOT"; };
+        "ABCDEF012345678900000012" = { "isa" = "PBXBuildFile"; "fileRef" = "ABCDEF012345678900000011"; };
+        "ABCDEF012345678900000001" = { "isa" = "PBXFileReference"; "path" = "TyPad/Sources/TyPad/PreviewModel.swift"; "lastKnownFileType" = "sourcecode.swift"; "sourceTree" = "SOURCE_ROOT"; };
+        "ABCDEF012345678900000002" = { "isa" = "PBXBuildFile"; "fileRef" = "ABCDEF012345678900000001"; };
         "6A06888615E731CB45DA91B8" = {
             "isa" = "PBXSourcesBuildPhase";
             "buildActionMask" = "2147483647";
-            "files" = ("A58DC30EF773CFBB6B74D390", "959EDB364761EE64811F00BD", "B7DD9D9240DC27AE118FA687");
+            "files" = ("ABCDEF012345678900000002", "AABBCC012345678900000032", "AABBCC012345678900000022", "AABBCC012345678900000012", "AABBCC012345678900000002", "FEDCBA012345678900000012", "FEDCBA012345678900000002", "ABCDEF012345678900000022", "ABCDEF012345678900000012", "A58DC30EF773CFBB6B74D390", "959EDB364761EE64811F00BD", "B7DD9D9240DC27AE118FA687");
             "runOnlyForDeploymentPostprocessing" = "0";
         };
         "7223C4F4C17B403B62B0C3AE" = {
@@ -78,7 +111,7 @@
             "buildConfigurationList" = "13A1E6B6205214234A4A4BE7";
             "projectDirPath" = "";
             "projectRoot" = "";
-            "knownRegions" = ("en", "Base");
+            "knownRegions" = ("en", "zh-Hans", "Base");
             "isa" = "PBXProject";
             "productRefGroup" = "659207126D64A1619752DCA1";
             "compatibilityVersion" = "Xcode 14.0";
@@ -190,7 +223,7 @@
             "shellPath" = "/bin/bash";
             "isa" = "PBXShellScriptBuildPhase";
             "runOnlyForDeploymentPostprocessing" = "0";
-            "outputPaths" = ("$(TYPAD_BINDINGS_DIR)/TyPadCore.swift", "$(TYPAD_BINDINGS_DIR)/include/TyPadCoreFFI.h", "$(TYPAD_BINDINGS_DIR)/include/module.modulemap", "$(TYPAD_BINDINGS_DIR)/libtypad_ffi.a");
+            "outputPaths" = ("$(TYPAD_BINDINGS_DIR)/TyPadCore.swift", "$(TYPAD_BINDINGS_DIR)/include/TyPadCoreFFI.h", "$(TYPAD_BINDINGS_DIR)/include/module.modulemap", "$(TYPAD_BINDINGS_DIR)/libtypad_ffi.a", "$(TYPAD_BINDINGS_DIR)/typad-worker");
             "shellScript" = "bash \"$SRCROOT/build-bindings.sh\"";
             "files" = ();
             "alwaysOutOfDate" = "1";
@@ -262,7 +295,7 @@
             "buildConfigurationList" = "88E20DA17B7BFDFB307771AC";
             "productName" = "TyPad";
             "isa" = "PBXNativeTarget";
-            "buildPhases" = ("6A06888615E731CB45DA91B8", "F16C82B20B66248FE2C09F88");
+            "buildPhases" = ("AABBCC012345678900000043", "6A06888615E731CB45DA91B8", "F16C82B20B66248FE2C09F88", "FEDCBA012345678900000099");
             "dependencies" = ("6203C87A233CDCCCAEB89CAC");
             "name" = "TyPad";
             "buildRules" = ();
@@ -307,7 +340,7 @@
         "806A77B8C7E5EBCB8AC6DC06" = {
             "isa" = "PBXGroup";
             "sourceTree" = "<group>";
-            "children" = ("7223C4F4C17B403B62B0C3AE", "0ACFA8568F137A0DD17FA2D2", "5C7F61EDF21E13782D538B6F", "3EA95F91B5D19DE0CA70B2A2", "9CD412CCC50F68C0B909F53A", "2B44DEADEE4F5A49D8144ACD", "659207126D64A1619752DCA1", "C298381A013D1EF0318382FF");
+            "children" = ("AABBCC012345678900000051", "AABBCC012345678900000041", "7223C4F4C17B403B62B0C3AE", "AABBCC012345678900000031", "AABBCC012345678900000021", "AABBCC012345678900000011", "AABBCC012345678900000001", "FEDCBA012345678900000011", "FEDCBA012345678900000001", "ABCDEF012345678900000021", "ABCDEF012345678900000011", "ABCDEF012345678900000001", "0ACFA8568F137A0DD17FA2D2", "5C7F61EDF21E13782D538B6F", "3EA95F91B5D19DE0CA70B2A2", "9CD412CCC50F68C0B909F53A", "2B44DEADEE4F5A49D8144ACD", "659207126D64A1619752DCA1", "C298381A013D1EF0318382FF");
         };
         "3EA95F91B5D19DE0CA70B2A2" = {
             "path" = "TyPadCore.swift";

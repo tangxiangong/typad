@@ -8,6 +8,7 @@ publish = false
 
 [dependencies]
 typst.workspace = true
+typst-layout.workspace = true
 typst-pdf.workspace = true
 typst-kit.workspace = true
 

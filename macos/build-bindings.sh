@@ -11,7 +11,7 @@ export MACOSX_DEPLOYMENT_TARGET="${MACOSX_DEPLOYMENT_TARGET:-13.0}"
 export CARGO_TARGET_DIR="$TYPAD_RUST_TARGET_DIR"
 cd "$project_root"
 mode=debug
-flags=(--locked -p typad-ffi)
+flags=(--locked -p typad-ffi -p typad-worker)
 case "${CONFIGURATION:-Debug}" in
     Debug) ;;
     Release) mode=release; flags+=(--release);;
@@ -19,6 +19,7 @@ case "${CONFIGURATION:-Debug}" in
 esac
 mkdir -p "$TYPAD_BINDINGS_DIR/include" "$TYPAD_BINDINGS_DIR/generated"
 libs=()
+workers=()
 metadata=""
 for cpu in $ARCHS; do
     case "$cpu" in
@@ -33,6 +34,7 @@ for cpu in $ARCHS; do
     fi
     cargo build "${flags[@]}" --target "$triple"
     libs+=("$CARGO_TARGET_DIR/$triple/$mode/libtypad_ffi.a")
+    workers+=("$CARGO_TARGET_DIR/$triple/$mode/typad-worker")
     metadata="$CARGO_TARGET_DIR/$triple/$mode/libtypad_ffi.dylib"
 done
 bash bindings/generate-swift.sh "$metadata" "$TYPAD_BINDINGS_DIR/generated"
@@ -52,3 +54,5 @@ if ! cmp -s "$TYPAD_BINDINGS_DIR/combined.a" "$TYPAD_BINDINGS_DIR/libtypad_ffi.a
 else
     rm "$TYPAD_BINDINGS_DIR/combined.a"
 fi
+
+xcrun lipo -create "${workers[@]}" -output "$TYPAD_BINDINGS_DIR/typad-worker"

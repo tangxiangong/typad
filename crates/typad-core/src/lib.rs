@@ -1,5 +1,7 @@
-//! Platform-independent document primitives. Typst compilation is a later milestone.
+//! Platform-independent document primitives and Typst compilation.
 #![deny(missing_docs)]
+
+pub mod compiler;
 
 /// Initial content for a new, unsaved Typst document.
 pub const NEW_DOCUMENT: &str = "= Untitled\n\nStart writing with Typst.\n";

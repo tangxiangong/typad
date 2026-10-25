@@ -13,3 +13,12 @@ pub fn summarize_source(source: &str) -> SourceSummary {
         scalar_count: source.chars().count() as u64,
     }
 }
+
+/// Compile the current main-source snapshot; path is absent for an unsaved document.
+pub fn compile_document(
+    source: &str,
+    path: Option<&str>,
+    revision: u64,
+) -> crate::records::CompileOutput {
+    typad_core::compiler::compile(source, path.map(std::path::Path::new), revision)
+}

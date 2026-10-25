@@ -10,7 +10,7 @@ struct TypstDocument: FileDocument {
     static var readableContentTypes: [UTType] { [.typstSource] }
     var source: String
 
-    init() { source = TyPadCore.newDocument() }
+    init() { source = "" }
 
     init(configuration: ReadConfiguration) throws {
         guard let data = configuration.file.regularFileContents,

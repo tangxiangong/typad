@@ -7,3 +7,6 @@ pub struct SourceSummary {
     /// Unicode scalar count; not grapheme clusters or UTF-16 offsets.
     pub scalar_count: u64,
 }
+
+/// Shared compiler result and diagnostic records.
+pub use typad_core::compiler::{CompileDiagnostic, CompileOutput};
