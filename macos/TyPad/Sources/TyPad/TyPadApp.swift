@@ -16,6 +16,12 @@ struct TyPadApp: App {
         }
         .defaultSize(width: 1100, height: 700)
         .commands {
+            // The leading standalone welcome Window suppresses the implicit
+            // DocumentGroup shortcut. Define one app-wide New command.
+            CommandGroup(replacing: .newItem) {
+                Button("New") { NSDocumentController.shared.newDocument(nil) }
+                    .keyboardShortcut("n", modifiers: .command)
+            }
             TextEditingCommands()
             CommandGroup(after: .windowArrangement) {
                 Button("Show Welcome Window") { openWindow(id: "welcome") }
