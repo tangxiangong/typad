@@ -45,3 +45,9 @@ struct CompileOutput {
 pub fn compile_document(source: String, path: Option<String>, revision: u64) -> CompileOutput {
     typad_service::api::compile_document(&source, path.as_deref(), revision)
 }
+
+/// Supply native platform font files before the first snapshot compilation.
+#[uniffi::export]
+pub fn initialize_fonts(paths: Vec<String>) {
+    typad_service::api::initialize_fonts(&paths);
+}

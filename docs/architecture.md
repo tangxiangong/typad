@@ -2,7 +2,7 @@
 
 TyPad 采用共享 Rust 内核与各平台原生客户端的结构。文档分析、项目逻辑和排版能力由核心模块提供，窗口、编辑交互、文件访问及系统集成由平台客户端负责。
 
-当前只开发 macOS 客户端，使用 SwiftUI 和 AppKit，通过 UniFFI 调用 Rust。后续平台可以复用 Rust 核心和服务接口，并采用适合自身的原生 UI 与绑定方式。
+当前包含 macOS 和 iPad 客户端：macOS 使用 SwiftUI 与 AppKit，iPad 使用 SwiftUI 与 UIKit。两者共享 Rust 核心和 UniFFI 绑定；macOS 编译与语言服务运行在独立工作进程，iPad 在应用内调用快照编译接口。
 
 ## 模块
 
@@ -12,7 +12,8 @@ TyPad 采用共享 Rust 内核与各平台原生客户端的结构。文档分�
 | `crates/typad-service` | 应用接口及跨语言传递的数据类型 |
 | `crates/typad-ffi` | 将服务接口导出给 Swift |
 | `bindings/generator` | 运行 UniFFI 官方 Swift 绑定生成器 |
-| `macos/TyPad` | 应用界面、文档读写和原生交互 |
+| `macos/TyPad` | macOS 界面、共享文档类型与资源 |
+| `ipad` | iPad 界面、应用内编译调度与构建入口 |
 | `crates/typad-worker` | 自有隔离工作进程、Tinymist 库适配与版本化 IPC |
 | `xtask` | 本地开发检查命令 |
 | `ci` | 静态检查、Universal 构建和 GUI 测试脚本 |
@@ -27,7 +28,7 @@ Rust 已接收包含版本号的主文档源码快照，编译结果和诊断关
 
 编辑区使用 `NSViewRepresentable` 包装 `NSTextView`，保留原生撤销、输入法组合输入、自动换行及查找替换。Tinymist 补全以 UTF-16 编辑范围插入，并保留撤销；已提供行号与基础词法着色，完整语义高亮、折叠和多光标仍待实现。编译器统一把主文档错误的 UTF-8 字节位置转换为 UTF-16 偏移，AppKit 用于错误跳转。
 
-## 排版与预览
+## macOS 排版与预览
 
 应用为每个文档窗口启动自己的 `typad-worker` Rust 子进程，直接调用 Tinymist crate，未使用官方 CLI、stdio LSP 或外部服务。主进程通过 `WorkerClient` 使用版本化 JSON-lines IPC，发送请求 ID、源码版本、完整未保存源码、文件路径及 UTF-16 光标位置。UniFFI 仍保留轻量的新文档和源码统计接口，不承担 IPC。
 
@@ -54,3 +55,9 @@ Debug 和 Release 均默认生成 Universal 2 应用。Rust 分别编译 `aarch6
 ## 原生界面与本地化
 
 独立 `Window` 承载欢迎页，文档工作区采用 `NavigationSplitView` 与源码/PDF 分栏。补全使用不获取键盘焦点的 `NSPanel`，macOS 26 使用 `glassEffect`，旧系统回退到原生材质。控件文案、动态状态与错误提示由 `Localizable.xcstrings` 提供中英文；上游文档与编译器诊断保留原文。PDFKit 替换文档时暂时覆盖上一帧，关闭隐式动画，并保留阅读位置与缩放，避免短暂白屏。
+
+## iPad Target
+
+`macos/TyPad.xcodeproj` 同时包含 macOS `TyPad` 和 iPad `TyPad-iPad` 应用 Target；各自依赖平台独立的 Swift 绑定库及 Rust 构建 Target。绑定输出使用配置与 `EFFECTIVE_PLATFORM_NAME` 隔离，避免 macOS、iPad 设备和模拟器产物互相覆盖。
+
+iPad 界面位于 `ipad/Sources/TyPad`，共享 `TypstDocument` 和资源。`LocalPreviewModel` 在后台串行队列调用已有 `compile_document` FFI，使用防抖、单个在途请求和最新待编译快照；读取外部资源期间持有安全作用域权限，过期结果被丢弃。iPad 不启动子进程，当前快照后端不具备 macOS Tinymist 工作进程的包解析、补全和崩溃隔离。具体功能边界见 [iPad 开发指南](../ipad/README.md)。

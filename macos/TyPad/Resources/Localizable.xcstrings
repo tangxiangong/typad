@@ -167,6 +167,23 @@
         }
       }
     },
+    "Allow Resource Folder…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allow Resource Folder…"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "允许资源文件夹…"
+          }
+        }
+      }
+    },
     "Analyzing with Tinymist…" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -388,6 +405,26 @@
         }
       }
     },
+    "Diagnostics: %@" : {
+
+    },
+    "Diagnostics: %lld" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diagnostics: %lld"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "诊断：%lld"
+          }
+        }
+      }
+    },
     "Document" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -422,6 +459,23 @@
         }
       }
     },
+    "Document options" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Document options"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "文档选项"
+          }
+        }
+      }
+    },
     "Document outline" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -452,6 +506,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "新建或打开文档后，将在此显示。"
+          }
+        }
+      }
+    },
+    "Done" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "完成"
           }
         }
       }
@@ -541,6 +612,23 @@
         }
       }
     },
+    "File operation failed" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "File operation failed"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "文件操作失败"
+          }
+        }
+      }
+    },
     "Filter recent documents" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -605,6 +693,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "目录"
+          }
+        }
+      }
+    },
+    "Line %@" : {
+
+    },
+    "Line %llu" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Line %llu"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "第 %llu 行"
           }
         }
       }
@@ -724,6 +832,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "没有编译问题"
+          }
+        }
+      }
+    },
+    "No diagnostics" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No diagnostics"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有诊断信息"
           }
         }
       }
@@ -850,6 +975,23 @@
     "PDF" : {
 
     },
+    "PDF Preview" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PDF Preview"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PDF 预览"
+          }
+        }
+      }
+    },
     "Preview" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -863,6 +1005,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "预览"
+          }
+        }
+      }
+    },
+    "Preview is out of date" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preview is out of date"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "预览尚未更新"
           }
         }
       }
@@ -1000,6 +1159,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "显示编译问题"
+          }
+        }
+      }
+    },
+    "Show diagnostics" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show diagnostics"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "显示诊断"
           }
         }
       }
@@ -1248,6 +1424,23 @@
         }
       }
     },
+    "Typst source editor" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Typst source editor"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Typst 源码编辑器"
+          }
+        }
+      }
+    },
     "Untitled.typ" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1278,6 +1471,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "版本 %@"
+          }
+        }
+      }
+    },
+    "View" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "View"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "视图"
           }
         }
       }

@@ -9,7 +9,10 @@ use typst::syntax::{FileId, RootedPath, Source, VirtualPath, VirtualRoot};
 use typst::text::{Font, FontBook};
 use typst::utils::LazyHash;
 use typst::{Library, LibraryExt, World, WorldExt};
-use typst_kit::{datetime::Time, fonts::FontStore};
+use typst_kit::{
+    datetime::Time,
+    fonts::{FontPath, FontStore},
+};
 use typst_layout::PagedDocument;
 
 /// A compiler message with a one-based source location, when available.
@@ -43,8 +46,33 @@ pub struct CompileOutput {
     pub page_count: u64,
 }
 
+static FONTS: OnceLock<FontStore> = OnceLock::new();
+
+/// Initialize the snapshot compiler with fonts discovered by the native platform.
+/// Call before the first compilation; subsequent calls keep the existing store.
+pub fn initialize_fonts(paths: &[String]) {
+    FONTS.get_or_init(|| {
+        let mut store = FontStore::new();
+        store.extend(typst_kit::fonts::embedded());
+        for path in paths {
+            let Ok(data) = std::fs::read(path) else {
+                continue;
+            };
+            for font in Font::iter(Bytes::new(data)) {
+                store.push((
+                    FontPath {
+                        path: PathBuf::from(path),
+                        index: font.index(),
+                    },
+                    font.info().clone(),
+                ));
+            }
+        }
+        store
+    });
+}
+
 fn fonts() -> &'static FontStore {
-    static FONTS: OnceLock<FontStore> = OnceLock::new();
     FONTS.get_or_init(|| {
         let mut store = FontStore::new();
         store.extend(typst_kit::fonts::embedded());
@@ -232,4 +260,60 @@ pub fn compile_world(world: &dyn World, revision: u64) -> CompileOutput {
     }
     result.elapsed_ms = started.elapsed().as_millis() as u64;
     result
+}
+
+#[cfg(all(test, target_os = "macos"))]
+mod tests {
+    use super::*;
+    use typst::layout::{Frame, FrameItem};
+    use typst::text::TextItem;
+
+    fn text_items(frame: &Frame) -> Vec<&TextItem> {
+        let mut items = Vec::new();
+        for (_, item) in frame.items() {
+            match item {
+                FrameItem::Text(text) => items.push(text),
+                FrameItem::Group(group) => items.extend(text_items(&group.frame)),
+                _ => {}
+            }
+        }
+        items
+    }
+
+    #[test]
+    fn native_font_files_render_chinese_heading_without_missing_glyphs() {
+        let paths = typst_kit::fonts::system()
+            .map(|(path, _)| path.path.to_string_lossy().into_owned())
+            .collect::<std::collections::BTreeSet<_>>()
+            .into_iter()
+            .collect::<Vec<_>>();
+        assert!(!paths.is_empty());
+        initialize_fonts(&paths);
+        let world = SnapshotWorld::new("= 身上\n\n中文 English $x^2$", None).unwrap();
+        let document = typst::compile::<PagedDocument>(&world).output.unwrap();
+        let items = text_items(&document.pages()[0].frame);
+        assert!(items.iter().any(|item| item.text.contains('身')));
+        for item in &items {
+            assert!(
+                item.glyphs.iter().all(|glyph| glyph.id != 0),
+                "missing glyph in {:?}",
+                item.text
+            );
+        }
+        let heading = items.iter().find(|item| item.text.contains('身')).unwrap();
+        let body = items.iter().find(|item| item.text.contains('中')).unwrap();
+        assert!(
+            heading.size > body.size,
+            "heading must be larger than body text"
+        );
+        assert!(!items.iter().any(|item| item.text.contains('=')));
+
+        let literal = SnapshotWorld::new("=身上", None).unwrap();
+        let document = typst::compile::<PagedDocument>(&literal).output.unwrap();
+        assert!(
+            text_items(&document.pages()[0].frame)
+                .iter()
+                .any(|item| item.text.contains('='))
+        );
+    }
 }

@@ -22,3 +22,8 @@ pub fn compile_document(
 ) -> crate::records::CompileOutput {
     typad_core::compiler::compile(source, path.map(std::path::Path::new), revision)
 }
+
+/// Supply native platform font files before the first snapshot compilation.
+pub fn initialize_fonts(paths: &[String]) {
+    typad_core::compiler::initialize_fonts(paths);
+}

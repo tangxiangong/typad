@@ -18,12 +18,31 @@
 			name = RustBindings;
 			productName = RustBindings;
 		};
+		E6185B5C54B786763E7B4B79 /* RustBindings-iPad */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = D87CF35806B3EF9EAF88F44B /* Build configuration list for PBXAggregateTarget "RustBindings-iPad" */;
+			buildPhases = (
+				11A3BEEEB2F64401E9DBB27E /* Build iPad Rust bindings */,
+			);
+			dependencies = (
+			);
+			name = "RustBindings-iPad";
+			productName = "RustBindings-iPad";
+		};
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
 		0BCB6D0A034D7B22E65113C4 /* TyPad/UITests/DocumentEditingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C298381A013D1EF0318382FF /* TyPad/UITests/DocumentEditingTests.swift */; };
+		2C6DA78D252ACB5E8ABBA47E /* TyPad/Sources/TyPad/TypstDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ACFA8568F137A0DD17FA2D2 /* TyPad/Sources/TyPad/TypstDocument.swift */; };
+		5FCCEC164762D65E3BB61BBD /* TyPad/Resources/Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = AABBCC012345678900000041 /* TyPad/Resources/Localizable.xcstrings */; };
+		62F86319994E9BBF5A5B3C9C /* TyPadApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F04913BA9CEDCCC22A9E4C4A /* TyPadApp.swift */; };
+		67161AD5470E9E57DE7AC611 /* TyPadCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EA95F91B5D19DE0CA70B2A2 /* TyPadCore.swift */; };
+		7472A35E9997E0782D81BBAA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73410E706D13A83403059041 /* Foundation.framework */; };
+		812FF149EA1C3C2876BB476F /* libTyPadCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EEAB77B2434CF5FBA98D087 /* libTyPadCore.a */; };
+		87A2B40E387CC72B6B519274 /* TyPad/Resources/AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = AABBCC012345678900000061 /* TyPad/Resources/AppIcon.icon */; };
 		959EDB364761EE64811F00BD /* TyPad/Sources/TyPad/TypstDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ACFA8568F137A0DD17FA2D2 /* TyPad/Sources/TyPad/TypstDocument.swift */; };
 		A58DC30EF773CFBB6B74D390 /* TyPad/Sources/TyPad/TyPadApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7223C4F4C17B403B62B0C3AE /* TyPad/Sources/TyPad/TyPadApp.swift */; };
+		A8C8BDDD5593D471842BACC1 /* PDFPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D7FF3F36DF20D44E7268398 /* PDFPreview.swift */; };
 		AABBCC012345678900000002 /* TyPad/Sources/TyPad/WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABBCC012345678900000001 /* TyPad/Sources/TyPad/WelcomeView.swift */; };
 		AABBCC012345678900000012 /* TyPad/Sources/TyPad/CompletionPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABBCC012345678900000011 /* TyPad/Sources/TyPad/CompletionPanel.swift */; };
 		AABBCC012345678900000022 /* TyPad/Sources/TyPad/WorkspaceSidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABBCC012345678900000021 /* TyPad/Sources/TyPad/WorkspaceSidebar.swift */; };
@@ -35,8 +54,12 @@
 		ABCDEF012345678900000012 /* TyPad/Sources/TyPad/SourceEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCDEF012345678900000011 /* TyPad/Sources/TyPad/SourceEditor.swift */; };
 		ABCDEF012345678900000022 /* TyPad/Sources/TyPad/PDFPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCDEF012345678900000021 /* TyPad/Sources/TyPad/PDFPreview.swift */; };
 		AF0CFC719F943F29E072B3D3 /* TyPadCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EA95F91B5D19DE0CA70B2A2 /* TyPadCore.swift */; };
+		B4DC95A12A576491618CDCF6 /* TyPad/Resources/Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AABBCC012345678900000051 /* TyPad/Resources/Assets.xcassets */; };
+		B519D53872FEA4CB7AF6697A /* EditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B180AAE04CB617CEC2DC4B2E /* EditorView.swift */; };
 		B7DD9D9240DC27AE118FA687 /* TyPad/Sources/TyPad/EditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7F61EDF21E13782D538B6F /* TyPad/Sources/TyPad/EditorView.swift */; };
+		DEAC3A3DAC39F6D278C6E858 /* LocalPreviewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C137C99BB361EFDF75EE790 /* LocalPreviewModel.swift */; };
 		EAF50FA7B66A4E24E8014471 /* System/Library/Frameworks/Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B44DEADEE4F5A49D8144ACD /* System/Library/Frameworks/Foundation.framework */; };
+		EBA9735DE7D09277ADFE6BAF /* SourceEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 053C86B9E488D9FC1DDB125C /* SourceEditor.swift */; };
 		F09F10544F0314CF316CE2D6 /* System/Library/Frameworks/AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CD412CCC50F68C0B909F53A /* System/Library/Frameworks/AppKit.framework */; };
 		F837B93FADC20E80054063A3 /* libTyPadCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FD2780F379CA0DF489BFBDA8 /* libTyPadCore.a */; };
 		FEDCBA012345678900000002 /* TyPad/Sources/TyPad/WorkerClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEDCBA012345678900000001 /* TyPad/Sources/TyPad/WorkerClient.swift */; };
@@ -50,6 +73,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = B8E6A9D72FD6660002568F87;
 			remoteInfo = TyPadCore;
+		};
+		327E82293E3E7CEEFA04EE60 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 35186D91C86B97884B2D1755 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 95DA9965DF618F6DD00D09B1;
+			remoteInfo = "TyPadCore-iPad";
 		};
 		41C2A7D1596C0711B0BAE070 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -65,15 +95,28 @@
 			remoteGlobalIDString = CAC3A608A97A565320CF0B55;
 			remoteInfo = RustBindings;
 		};
+		B8F79C7051BFC60D3F051D0E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 35186D91C86B97884B2D1755 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E6185B5C54B786763E7B4B79;
+			remoteInfo = "RustBindings-iPad";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		053C86B9E488D9FC1DDB125C /* SourceEditor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SourceEditor.swift; path = Sources/TyPad/SourceEditor.swift; sourceTree = "<group>"; };
 		0ACFA8568F137A0DD17FA2D2 /* TyPad/Sources/TyPad/TypstDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TyPad/Sources/TyPad/TypstDocument.swift; sourceTree = SOURCE_ROOT; };
 		2537AEEE169548EC25158E95 /* TyPadUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = TyPadUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B44DEADEE4F5A49D8144ACD /* System/Library/Frameworks/Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		3EA95F91B5D19DE0CA70B2A2 /* TyPadCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TyPadCore.swift; sourceTree = TYPAD_BINDINGS_DIR; };
 		5C7F61EDF21E13782D538B6F /* TyPad/Sources/TyPad/EditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TyPad/Sources/TyPad/EditorView.swift; sourceTree = SOURCE_ROOT; };
+		5FACB8458FC1871A7F0C48E8 /* TyPad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TyPad.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6D7FF3F36DF20D44E7268398 /* PDFPreview.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PDFPreview.swift; path = Sources/TyPad/PDFPreview.swift; sourceTree = "<group>"; };
 		7223C4F4C17B403B62B0C3AE /* TyPad/Sources/TyPad/TyPadApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TyPad/Sources/TyPad/TyPadApp.swift; sourceTree = SOURCE_ROOT; };
+		73410E706D13A83403059041 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		8C137C99BB361EFDF75EE790 /* LocalPreviewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LocalPreviewModel.swift; path = Sources/TyPad/LocalPreviewModel.swift; sourceTree = "<group>"; };
+		8EEAB77B2434CF5FBA98D087 /* libTyPadCore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libTyPadCore.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CD412CCC50F68C0B909F53A /* System/Library/Frameworks/AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		AABBCC012345678900000001 /* TyPad/Sources/TyPad/WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TyPad/Sources/TyPad/WelcomeView.swift; sourceTree = SOURCE_ROOT; };
 		AABBCC012345678900000011 /* TyPad/Sources/TyPad/CompletionPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TyPad/Sources/TyPad/CompletionPanel.swift; sourceTree = SOURCE_ROOT; };
@@ -85,14 +128,32 @@
 		ABCDEF012345678900000001 /* TyPad/Sources/TyPad/PreviewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TyPad/Sources/TyPad/PreviewModel.swift; sourceTree = SOURCE_ROOT; };
 		ABCDEF012345678900000011 /* TyPad/Sources/TyPad/SourceEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TyPad/Sources/TyPad/SourceEditor.swift; sourceTree = SOURCE_ROOT; };
 		ABCDEF012345678900000021 /* TyPad/Sources/TyPad/PDFPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TyPad/Sources/TyPad/PDFPreview.swift; sourceTree = SOURCE_ROOT; };
+		B180AAE04CB617CEC2DC4B2E /* EditorView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = EditorView.swift; path = Sources/TyPad/EditorView.swift; sourceTree = "<group>"; };
 		B32700E8A1262CA160E1BAB6 /* TyPad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = TyPad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C298381A013D1EF0318382FF /* TyPad/UITests/DocumentEditingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TyPad/UITests/DocumentEditingTests.swift; sourceTree = SOURCE_ROOT; };
+		F04913BA9CEDCCC22A9E4C4A /* TyPadApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TyPadApp.swift; path = Sources/TyPad/TyPadApp.swift; sourceTree = "<group>"; };
 		FD2780F379CA0DF489BFBDA8 /* libTyPadCore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libTyPadCore.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		FEDCBA012345678900000001 /* TyPad/Sources/TyPad/WorkerClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TyPad/Sources/TyPad/WorkerClient.swift; sourceTree = SOURCE_ROOT; };
 		FEDCBA012345678900000011 /* TyPad/Sources/TyPad/LanguageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TyPad/Sources/TyPad/LanguageModel.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		0F5DC9BC11AD0AEEB71A7B14 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7472A35E9997E0782D81BBAA /* Foundation.framework in Frameworks */,
+				812FF149EA1C3C2876BB476F /* libTyPadCore.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A73B831B9A23F03AEB9AEEE3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F16C82B20B66248FE2C09F88 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -112,6 +173,8 @@
 				B32700E8A1262CA160E1BAB6 /* TyPad.app */,
 				FD2780F379CA0DF489BFBDA8 /* libTyPadCore.a */,
 				2537AEEE169548EC25158E95 /* TyPadUITests.xctest */,
+				8EEAB77B2434CF5FBA98D087 /* libTyPadCore.a */,
+				5FACB8458FC1871A7F0C48E8 /* TyPad.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -139,10 +202,51 @@
 				2B44DEADEE4F5A49D8144ACD /* System/Library/Frameworks/Foundation.framework */,
 				659207126D64A1619752DCA1 /* Products */,
 				C298381A013D1EF0318382FF /* TyPad/UITests/DocumentEditingTests.swift */,
+				9D5BD4248A7C45F02B90DDC0 /* Frameworks */,
+				ACFBDE4088ACCAB9904F3874 /* iPad */,
 			);
 			sourceTree = "<group>";
 		};
+		9D5BD4248A7C45F02B90DDC0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CBEFEF62CB3EC7A538198B1C /* iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		ACFBDE4088ACCAB9904F3874 /* iPad */ = {
+			isa = PBXGroup;
+			children = (
+				B180AAE04CB617CEC2DC4B2E /* EditorView.swift */,
+				8C137C99BB361EFDF75EE790 /* LocalPreviewModel.swift */,
+				6D7FF3F36DF20D44E7268398 /* PDFPreview.swift */,
+				053C86B9E488D9FC1DDB125C /* SourceEditor.swift */,
+				F04913BA9CEDCCC22A9E4C4A /* TyPadApp.swift */,
+			);
+			name = iPad;
+			path = ../ipad;
+			sourceTree = "<group>";
+		};
+		CBEFEF62CB3EC7A538198B1C /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				73410E706D13A83403059041 /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		4224282E2F304DC86E44A253 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
 		2B9BA37E007A6C7A5CF757F2 /* TyPad */ = {
@@ -162,6 +266,42 @@
 			name = TyPad;
 			productName = TyPad;
 			productReference = B32700E8A1262CA160E1BAB6 /* TyPad.app */;
+			productType = "com.apple.product-type.application";
+		};
+		95DA9965DF618F6DD00D09B1 /* TyPadCore-iPad */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A3F9379B66FB0B50A6A915D2 /* Build configuration list for PBXNativeTarget "TyPadCore-iPad" */;
+			buildPhases = (
+				4224282E2F304DC86E44A253 /* Headers */,
+				D5B6460F7632F351FC47D781 /* Sources */,
+				A73B831B9A23F03AEB9AEEE3 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5842FDD09098F39F1DB73260 /* PBXTargetDependency */,
+			);
+			name = "TyPadCore-iPad";
+			productName = "TyPadCore-iPad";
+			productReference = 8EEAB77B2434CF5FBA98D087 /* libTyPadCore.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		B5CD1A030D7D59F72C9CE23C /* TyPad-iPad */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B9D8E24343C9DBD7171C3B4A /* Build configuration list for PBXNativeTarget "TyPad-iPad" */;
+			buildPhases = (
+				9E1A6A881B7E5A8298C2E241 /* Sources */,
+				0F5DC9BC11AD0AEEB71A7B14 /* Frameworks */,
+				6D13E8392957DC45F6C0ADAA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				601143B4B23840F506B5B72E /* PBXTargetDependency */,
+			);
+			name = "TyPad-iPad";
+			productName = "TyPad-iPad";
+			productReference = 5FACB8458FC1871A7F0C48E8 /* TyPad.app */;
 			productType = "com.apple.product-type.application";
 		};
 		B8E6A9D72FD6660002568F87 /* TyPadCore */ = {
@@ -223,11 +363,24 @@
 				B8E6A9D72FD6660002568F87 /* TyPadCore */,
 				2B9BA37E007A6C7A5CF757F2 /* TyPad */,
 				FF3840C6AA2E32CCF3040505 /* TyPadUITests */,
+				E6185B5C54B786763E7B4B79 /* RustBindings-iPad */,
+				95DA9965DF618F6DD00D09B1 /* TyPadCore-iPad */,
+				B5CD1A030D7D59F72C9CE23C /* TyPad-iPad */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		6D13E8392957DC45F6C0ADAA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5FCCEC164762D65E3BB61BBD /* TyPad/Resources/Localizable.xcstrings in Resources */,
+				B4DC95A12A576491618CDCF6 /* TyPad/Resources/Assets.xcassets in Resources */,
+				87A2B40E387CC72B6B519274 /* TyPad/Resources/AppIcon.icon in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		AABBCC012345678900000043 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -241,6 +394,29 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		11A3BEEEB2F64401E9DBB27E /* Build iPad Rust bindings */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Build iPad Rust bindings";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(TYPAD_BINDINGS_DIR)/TyPadCore.swift",
+				"$(TYPAD_BINDINGS_DIR)/include/TyPadCoreFFI.h",
+				"$(TYPAD_BINDINGS_DIR)/include/module.modulemap",
+				"$(TYPAD_BINDINGS_DIR)/libtypad_ffi.a",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "bash \"$SRCROOT/build-bindings.sh\"";
+		};
 		45A066A4D13DC5B6B176E566 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -306,6 +482,19 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		9E1A6A881B7E5A8298C2E241 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B519D53872FEA4CB7AF6697A /* EditorView.swift in Sources */,
+				DEAC3A3DAC39F6D278C6E858 /* LocalPreviewModel.swift in Sources */,
+				A8C8BDDD5593D471842BACC1 /* PDFPreview.swift in Sources */,
+				EBA9735DE7D09277ADFE6BAF /* SourceEditor.swift in Sources */,
+				62F86319994E9BBF5A5B3C9C /* TyPadApp.swift in Sources */,
+				2C6DA78D252ACB5E8ABBA47E /* TyPad/Sources/TyPad/TypstDocument.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C7347995B79F5572FFA056CF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -314,9 +503,29 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D5B6460F7632F351FC47D781 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				67161AD5470E9E57DE7AC611 /* TyPadCore.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		5842FDD09098F39F1DB73260 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "RustBindings-iPad";
+			target = E6185B5C54B786763E7B4B79 /* RustBindings-iPad */;
+			targetProxy = B8F79C7051BFC60D3F051D0E /* PBXContainerItemProxy */;
+		};
+		601143B4B23840F506B5B72E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "TyPadCore-iPad";
+			target = 95DA9965DF618F6DD00D09B1 /* TyPadCore-iPad */;
+			targetProxy = 327E82293E3E7CEEFA04EE60 /* PBXContainerItemProxy */;
+		};
 		6203C87A233CDCCCAEB89CAC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = B8E6A9D72FD6660002568F87 /* TyPadCore */;
@@ -379,7 +588,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TYPAD_BINDINGS_DIR = "$(BUILD_DIR)/TyPadBindings/$(CONFIGURATION)";
+				TYPAD_BINDINGS_DIR = "$(BUILD_DIR)/TyPadBindings/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
 				TYPAD_RUST_TARGET_DIR = "$(PROJECT_TEMP_DIR)/RustTarget";
 			};
 			name = Debug;
@@ -408,6 +617,38 @@
 				SWIFT_INCLUDE_PATHS = "$(inherited) $(TYPAD_BINDINGS_DIR)/include";
 			};
 			name = Release;
+		};
+		20F23DD9C3584DAB6558119C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = ../ipad/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"$(TYPAD_BINDINGS_DIR)/libtypad_ffi.a",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.tangxiangong.typad.debug;
+				PRODUCT_NAME = TyPad;
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_INCLUDE_PATHS = "$(inherited) $(TYPAD_BINDINGS_DIR)/include";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 2;
+				TYPAD_DISPLAY_NAME = "TyPad Debug";
+			};
+			name = Debug;
 		};
 		26FC29650C5EF5E034696234 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -492,6 +733,39 @@
 			};
 			name = Release;
 		};
+		88FC34BBDC450821DFD2AD16 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = ../ipad/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"$(TYPAD_BINDINGS_DIR)/libtypad_ffi.a",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.tangxiangong.typad;
+				PRODUCT_NAME = TyPad;
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_INCLUDE_PATHS = "$(inherited) $(TYPAD_BINDINGS_DIR)/include";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 2;
+				TYPAD_DISPLAY_NAME = TyPad;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		9B9FCFE57EC0EB8413614857 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -517,6 +791,52 @@
 				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 			};
 			name = Debug;
+		};
+		BB10BD80687DE415D6F278C2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Release;
+		};
+		D195FAA28D2C0A4319E304C9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Debug;
+		};
+		DF6F4DF8CD9CD08777AF7B37 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				DEFINES_MODULE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_MODULE_NAME = TyPadCore;
+				PRODUCT_NAME = TyPadCore;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_INCLUDE_PATHS = "$(inherited) $(TYPAD_BINDINGS_DIR)/include";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 2;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
 		};
 		E073240C136E27BD1373C8DA /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -562,10 +882,29 @@
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
-				TYPAD_BINDINGS_DIR = "$(BUILD_DIR)/TyPadBindings/$(CONFIGURATION)";
+				TYPAD_BINDINGS_DIR = "$(BUILD_DIR)/TyPadBindings/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
 				TYPAD_RUST_TARGET_DIR = "$(PROJECT_TEMP_DIR)/RustTarget";
 			};
 			name = Release;
+		};
+		E7932146731223FC255716F9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				DEFINES_MODULE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_MODULE_NAME = TyPadCore;
+				PRODUCT_NAME = TyPadCore;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_INCLUDE_PATHS = "$(inherited) $(TYPAD_BINDINGS_DIR)/include";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Debug;
 		};
 /* End XCBuildConfiguration section */
 
@@ -597,11 +936,38 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		A3F9379B66FB0B50A6A915D2 /* Build configuration list for PBXNativeTarget "TyPadCore-iPad" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DF6F4DF8CD9CD08777AF7B37 /* Release */,
+				E7932146731223FC255716F9 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B9D8E24343C9DBD7171C3B4A /* Build configuration list for PBXNativeTarget "TyPad-iPad" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				88FC34BBDC450821DFD2AD16 /* Release */,
+				20F23DD9C3584DAB6558119C /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		CDF157CD69323BB7CB46F614 /* Build configuration list for PBXNativeTarget "TyPadCore" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				33396E3552B519013B50D20D /* Debug */,
 				126458C31C6744B46D5DB36D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D87CF35806B3EF9EAF88F44B /* Build configuration list for PBXAggregateTarget "RustBindings-iPad" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BB10BD80687DE415D6F278C2 /* Release */,
+				D195FAA28D2C0A4319E304C9 /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

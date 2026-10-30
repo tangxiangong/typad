@@ -11,7 +11,9 @@ export MACOSX_DEPLOYMENT_TARGET="${MACOSX_DEPLOYMENT_TARGET:-13.0}"
 export CARGO_TARGET_DIR="$TYPAD_RUST_TARGET_DIR"
 cd "$project_root"
 mode=debug
-flags=(--locked -p typad-ffi -p typad-worker)
+flags=(--locked -p typad-ffi)
+platform="${PLATFORM_NAME:-macosx}"
+if [[ "$platform" == macosx ]]; then flags+=(-p typad-worker); fi
 case "${CONFIGURATION:-Debug}" in
     Debug) ;;
     Release) mode=release; flags+=(--release);;
@@ -22,10 +24,13 @@ libs=()
 workers=()
 metadata=""
 for cpu in $ARCHS; do
-    case "$cpu" in
-        arm64) triple=aarch64-apple-darwin;;
-        x86_64) triple=x86_64-apple-darwin;;
-        *) echo "Unsupported architecture: $cpu" >&2; exit 1;;
+    case "$platform:$cpu" in
+        macosx:arm64) triple=aarch64-apple-darwin;;
+        macosx:x86_64) triple=x86_64-apple-darwin;;
+        iphoneos:arm64) triple=aarch64-apple-ios;;
+        iphonesimulator:arm64) triple=aarch64-apple-ios-sim;;
+        iphonesimulator:x86_64) triple=x86_64-apple-ios;;
+        *) echo "Unsupported platform/architecture: $platform/$cpu" >&2; exit 1;;
     esac
     if command -v rustup >/dev/null; then
         if ! rustup target list --installed | /usr/bin/grep -qx "$triple"; then
@@ -34,8 +39,10 @@ for cpu in $ARCHS; do
     fi
     cargo build "${flags[@]}" --target "$triple"
     libs+=("$CARGO_TARGET_DIR/$triple/$mode/libtypad_ffi.a")
-    workers+=("$CARGO_TARGET_DIR/$triple/$mode/typad-worker")
-    metadata="$CARGO_TARGET_DIR/$triple/$mode/libtypad_ffi.dylib"
+    if [[ "$platform" == macosx ]]; then
+        workers+=("$CARGO_TARGET_DIR/$triple/$mode/typad-worker")
+    fi
+    metadata="$CARGO_TARGET_DIR/$triple/$mode/libtypad_ffi.a"
 done
 bash bindings/generate-swift.sh "$metadata" "$TYPAD_BINDINGS_DIR/generated"
 # Preserve generated-file timestamps so Swift avoids unnecessary recompilation.
@@ -55,4 +62,6 @@ else
     rm "$TYPAD_BINDINGS_DIR/combined.a"
 fi
 
-xcrun lipo -create "${workers[@]}" -output "$TYPAD_BINDINGS_DIR/typad-worker"
+if [[ "$platform" == macosx ]]; then
+    xcrun lipo -create "${workers[@]}" -output "$TYPAD_BINDINGS_DIR/typad-worker"
+fi
