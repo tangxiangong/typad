@@ -21,7 +21,7 @@ struct SourceEditor: NSViewRepresentable {
     func makeCoordinator() -> Coordinator { Coordinator(self) }
 
     func makeNSView(context: Context) -> NSScrollView {
-        let scroll = NSTextView.scrollableTextView()
+        let scroll = SourceTextView.scrollableTextView()
         guard let editor = scroll.documentView as? NSTextView else { return scroll }
         editor.isRichText = false
         editor.isAutomaticQuoteSubstitutionEnabled = false
@@ -206,6 +206,7 @@ struct SourceEditor: NSViewRepresentable {
         }
         func textViewDidChangeSelection(_ notification: Notification) {
             guard let editor = notification.object as? NSTextView else { return }
+            editor.needsDisplay = true
             let offset = editor.selectedRange().location
             DispatchQueue.main.async { [weak self] in self?.parent.cursor = offset }
         }
@@ -234,6 +235,7 @@ struct SourceEditor: NSViewRepresentable {
 
         func textDidChange(_ notification: Notification) {
             guard let editor = notification.object as? NSTextView else { return }
+            editor.needsDisplay = true
             parent.text = editor.string
             highlight(editor)
             completionTask?.cancel()
@@ -250,6 +252,33 @@ struct SourceEditor: NSViewRepresentable {
             }
             (editor.enclosingScrollView?.verticalRulerView as? SourceRuler)?.updateLines()
         }
+    }
+}
+
+/// Paint behind the text and selection without changing text attributes or undo history.
+@MainActor
+final class SourceTextView: NSTextView {
+    override func drawBackground(in rect: NSRect) {
+        super.drawBackground(in: rect)
+        guard selectedRange().length == 0,
+              let manager = layoutManager, let container = textContainer else { return }
+        manager.ensureLayout(for: container)
+        let length = (string as NSString).length
+        let offset = min(selectedRange().location, length)
+        let fragment: NSRect
+        if offset == length, manager.extraLineFragmentTextContainer != nil {
+            fragment = manager.extraLineFragmentRect
+        } else if length > 0 {
+            let glyph = manager.glyphIndexForCharacter(at: min(offset, length - 1))
+            fragment = manager.lineFragmentRect(forGlyphAt: glyph, effectiveRange: nil)
+        } else {
+            fragment = NSRect(x: 0, y: 0, width: 0,
+                height: manager.defaultLineHeight(for: font ?? .monospacedSystemFont(ofSize: 14, weight: .regular)))
+        }
+        let line = NSRect(x: bounds.minX, y: fragment.minY + textContainerOrigin.y,
+                          width: bounds.width, height: fragment.height)
+        NSColor.labelColor.withAlphaComponent(0.06).setFill()
+        line.intersection(rect).fill()
     }
 }
 
