@@ -9,9 +9,12 @@ if [[ ! -f "$products/Debug/libTyPadCore.a" || ! -f "$bindings/libtypad_ffi.a" ]
     exit 1
 fi
 mkdir -p target/ipad-logic
+cp -R ipad/Resources/Fonts target/ipad-logic/
 xcrun swiftc -parse-as-library -target "arm64-apple-macosx$(xcrun --sdk macosx --show-sdk-version)" \
     -module-cache-path target/ci-swift-module-cache \
     -I "$products/Debug" -I "$bindings/include" \
+    macos/TyPad/Sources/TyPad/ProjectWorkspace.swift \
+    ipad/Sources/TyPad/TextChange.swift \
     ipad/Sources/TyPad/LocalPreviewModel.swift ipad/LogicTests/LocalPreviewModelTests.swift \
     "$products/Debug/libTyPadCore.a" "$bindings/libtypad_ffi.a" \
     -o target/ipad-logic/LocalPreviewModelTests

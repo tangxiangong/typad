@@ -21,9 +21,11 @@ final class PreviewModel: ObservableObject {
         let source: String
         let path: String?
         let revision: UInt64
+        let root: String?
+        let files: [String: String]
     }
 
-    func update(source: String, url: URL?, automatic: Bool, immediate: Bool = false) {
+    func update(source: String, url: URL?, automatic: Bool, immediate: Bool = false, root: String? = nil, files: [String: String] = [:]) {
         revision &+= 1
         isStale = true
         diagnostics = []
@@ -33,7 +35,7 @@ final class PreviewModel: ObservableObject {
             status = String(localized: "Auto compile paused")
             return
         }
-        let snapshot = Snapshot(source: source, path: url?.path, revision: revision)
+        let snapshot = Snapshot(source: source, path: url?.path, revision: revision, root: root, files: files)
         status = String(localized: "Waiting to compile")
         debounce = Task { [weak self] in
             if !immediate {
@@ -44,6 +46,16 @@ final class PreviewModel: ObservableObject {
             self.pending = snapshot
             self.startNext()
         }
+    }
+
+    func invalidate() {
+        revision &+= 1
+        debounce?.cancel()
+        pending = nil
+        isStale = true
+        pdf = nil
+        diagnostics = []
+        status = String(localized: "Choose a main Typst document")
     }
 
     func stop() {
@@ -62,7 +74,7 @@ final class PreviewModel: ObservableObject {
             guard let self else { return }
             do {
                 let output = try await worker.request(operation: "compile", source: snapshot.source,
-                    path: snapshot.path, revision: snapshot.revision)
+                    path: snapshot.path, revision: snapshot.revision, root: snapshot.root, files: snapshot.files)
                 if snapshot.revision == revision {
                     diagnostics = output.diagnostics ?? []
                     if let bytes = output.pdf {

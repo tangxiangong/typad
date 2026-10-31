@@ -17,7 +17,7 @@ final class LanguageModel: ObservableObject {
         status = String(localized: "Request suggestions or documentation at the current cursor.")
     }
 
-    func query(_ operation: String, source: String, path: String?, offset: Int, revision: UInt64, worker: WorkerClient) {
+    func query(_ operation: String, source: String, path: String?, offset: Int, revision: UInt64, worker: WorkerClient, root: String? = nil, files: [String: String] = [:]) {
         invalidate()
         self.source = source
         let token = generation
@@ -25,7 +25,7 @@ final class LanguageModel: ObservableObject {
         status = String(localized: "Analyzing with Tinymist…")
         Task { [weak self] in
             do {
-                let result = try await worker.request(operation: operation, source: source, path: path, revision: revision, offset: offset)
+                let result = try await worker.request(operation: operation, source: source, path: path, revision: revision, offset: offset, root: root, files: files)
                 guard let self, self.generation == token else { return }
                 self.completions = result.completions ?? []
                 self.documentation = result.documentation ?? ""

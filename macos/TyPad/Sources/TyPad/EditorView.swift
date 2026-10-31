@@ -13,6 +13,9 @@ private enum WorkspaceLayout: String, CaseIterable {
 struct EditorView: View {
     @Binding var document: TypstDocument
     let fileURL: URL?
+    @ObservedObject var workspace = ProjectWorkspace()
+    @StateObject private var sessions = SourceEditorSessions()
+    @State private var showFiles = true
     @StateObject private var preview = PreviewModel()
     @StateObject private var language = LanguageModel()
     @State private var lineCount: UInt64 = 1
@@ -23,6 +26,8 @@ struct EditorView: View {
     @State private var layout = WorkspaceLayout.split
     @State private var scale = PreviewScale.fit
     @State private var selection: SourceSelection?
+    @State private var selectionFile: URL?
+    @State private var replacementFile: URL?
     @State private var cursor = 0
     @State private var replacement: SourceReplacement?
     @State private var showAssistance = false
@@ -31,11 +36,20 @@ struct EditorView: View {
     var body: some View {
         VStack(spacing: 0) {
             NavigationSplitView(columnVisibility: $columnVisibility) {
-                WorkspaceSidebar(filename: filename, headings: headings, diagnostics: preview.diagnostics, issues: $showIssues) { offset in
-                    if layout == .preview { layout = .split }
-                    selection = SourceSelection(offset: offset)
+                if workspace.root != nil && showFiles {
+                    ProjectNavigator(workspace: workspace)
+                        .navigationSplitViewColumnWidth(min: 180, ideal: 220, max: 320)
+                } else {
+                    WorkspaceSidebar(filename: filename, headings: headings, diagnostics: preview.diagnostics, issues: $showIssues) { offset in
+                        if layout == .preview { layout = .split }
+                        if showIssues, let main = workspace.mainURL {
+                            do { try workspace.open(main) } catch { workspace.error = error.localizedDescription; return }
+                        }
+                        selectionFile = workspace.root == nil ? fileURL : workspace.activeURL
+                        selection = SourceSelection(offset: offset)
+                    }
+                    .navigationSplitViewColumnWidth(min: 180, ideal: 200, max: 260)
                 }
-                .navigationSplitViewColumnWidth(min: 180, ideal: 200, max: 260)
             } detail: {
                 HSplitView {
                     if layout != .preview { sourcePane.frame(minWidth: 280, idealWidth: 440, maxWidth: .infinity, maxHeight: .infinity) }
@@ -49,6 +63,11 @@ struct EditorView: View {
         .frame(minWidth: 780, minHeight: 480)
         .toolbar {
             ToolbarItemGroup(placement: .navigation) {
+                if workspace.root != nil {
+                    Button { showFiles.toggle(); showIssues = false; columnVisibility = .all } label: {
+                        Label(showFiles ? "Document outline" : "Project files", systemImage: showFiles ? "list.bullet.indent" : "folder")
+                    }
+                }
                 Button { compile(immediate: true) } label: {
                     Label("Compile", systemImage: "gearshape.2")
                 }.keyboardShortcut("b", modifiers: .command).help("Compile document (⌘B)")
@@ -61,6 +80,7 @@ struct EditorView: View {
                         .foregroundStyle(automatic ? Color.accentColor : Color.secondary)
                 }.help("Preview updates")
                 Button {
+                    showFiles = false
                     showIssues = true
                     columnVisibility = .all
                 } label: {
@@ -79,7 +99,18 @@ struct EditorView: View {
         }
         .onAppear { preview.worker.reopen(); compile() }
         .onChange(of: document.source) { dismissAssistance(); compile() }
-        .onChange(of: fileURL) { dismissAssistance(); compile() }
+        .onChange(of: fileURL) {
+            dismissAssistance(); replacement = nil; cursor = 0
+            if selectionFile != fileURL { selection = nil }
+            compile()
+        }
+        .onChange(of: workspace.revision) { compile() }
+        .alert(workspace.error == nil ? String(localized: "Recovered edits") : String(localized: "Project error"),
+               isPresented: Binding(get: { workspace.error != nil || workspace.recoveredEdits }, set: {
+                   if !$0 { workspace.error = nil; workspace.recoveredEdits = false }
+               })) {
+            Button("OK") { workspace.error = nil; workspace.recoveredEdits = false }
+        } message: { Text(workspace.error ?? String(localized: "Recovered unsaved project edits. Review them before saving.")) }
         .onChange(of: cursor) { dismissAssistance() }
         .onChange(of: layout) { dismissAssistance() }
         .onChange(of: automatic) { compile() }
@@ -98,8 +129,12 @@ struct EditorView: View {
 
     private var sourcePane: some View {
         VStack(spacing: 0) {
+            if workspace.root != nil {
+                ProjectTabs(workspace: workspace) { sessions.remove($0) }
+                Divider()
+            }
             HStack(spacing: 8) {
-                Image(systemName: "doc.text").foregroundStyle(.secondary)
+                FileIcon(url: fileURL ?? URL(fileURLWithPath: "Untitled.typ"))
                 Text(verbatim: filename).lineLimit(1).truncationMode(.middle)
                 Spacer()
                 Menu {
@@ -111,12 +146,19 @@ struct EditorView: View {
             .font(.system(size: 12)).padding(.horizontal, 12).frame(height: 28)
             .background(.bar).zIndex(1)
             Divider()
-            SourceEditor(text: $document.source, selection: selection, cursor: $cursor, replacement: replacement,
-                         language: language, assistanceVisible: $showAssistance,
-                         requestCompletion: { query("complete", offset: $0) }, acceptCompletion: { item in
-                replacement = SourceReplacement(source: language.source, edits: item.edits)
-                showAssistance = false
-            }).clipped()
+            if workspace.root == nil || workspace.activeURL != nil {
+                SourceEditor(text: $document.source, selection: selectionFile == fileURL ? selection : nil, cursor: $cursor,
+                             replacement: replacementFile == fileURL ? replacement : nil,
+                             language: language, assistanceVisible: $showAssistance,
+                             requestCompletion: { query("complete", offset: $0) }, acceptCompletion: { item in
+                    replacementFile = fileURL
+                    replacement = SourceReplacement(source: language.source, edits: item.edits)
+                    showAssistance = false
+                }, session: workspace.root == nil ? nil : fileURL.map { sessions.session(for: $0) }).id(workspace.root == nil ? nil : fileURL).clipped()
+            } else {
+                Text("Choose a file in the project navigator").foregroundStyle(.secondary)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
         }
     }
 
@@ -171,10 +213,17 @@ struct EditorView: View {
     private func query(_ operation: String, offset: Int) {
         showAssistance = true
         language.query(operation, source: document.source, path: fileURL?.path,
-                       offset: offset, revision: preview.revision, worker: preview.worker)
+                       offset: offset, revision: preview.revision, worker: preview.worker,
+                       root: workspace.root?.path, files: workspace.snapshots)
     }
     private func dismissAssistance() { showAssistance = false; language.invalidate() }
     private func compile(immediate: Bool = false) {
-        preview.update(source: document.source, url: fileURL, automatic: automatic, immediate: immediate)
+        if workspace.root != nil {
+            guard let main = workspace.main else { preview.invalidate(); return }
+            preview.update(source: main.source, url: main.url, automatic: automatic, immediate: immediate,
+                           root: workspace.root?.path, files: workspace.snapshots)
+        } else {
+            preview.update(source: document.source, url: fileURL, automatic: automatic, immediate: immediate)
+        }
     }
 }

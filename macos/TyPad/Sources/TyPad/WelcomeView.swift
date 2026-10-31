@@ -22,9 +22,15 @@ struct WelcomeView: View {
                 Text("Version \(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "—")")
                     .font(.callout).foregroundStyle(.secondary).padding(.top, 5)
                 Divider().padding(.horizontal, 24).padding(.vertical, 24)
-                VStack(spacing: 18) {
+                VStack(spacing: 10) {
                     Button { NSDocumentController.shared.openDocument(nil) } label: {
                         action("Open a document…", subtitle: "Choose a .typ file on your Mac", icon: "folder")
+                    }
+                    Button { ProjectDocument.createFolder() } label: {
+                        action("New Project…", subtitle: "Create a folder with a main document", icon: "folder.badge.plus")
+                    }
+                    Button { ProjectDocument.chooseFolder() } label: {
+                        action("Open Project…", subtitle: "Edit files in a folder workspace", icon: "folder.badge.gearshape")
                     }
                     Button { NSDocumentController.shared.newDocument(nil) } label: {
                         action("New document", subtitle: "Start with a blank Typst document", icon: "doc.badge.plus")
@@ -38,7 +44,7 @@ struct WelcomeView: View {
             .background(.regularMaterial)
             Divider()
             VStack(alignment: .leading, spacing: 0) {
-                Text("Recent documents").font(.system(size: 13, weight: .medium)).frame(maxWidth: .infinity).frame(height: 40)
+                Text("Recent documents and projects").font(.system(size: 13, weight: .medium)).frame(maxWidth: .infinity).frame(height: 40)
                 Divider()
                 if filtered.isEmpty {
                     VStack(spacing: 10) {
@@ -54,7 +60,7 @@ struct WelcomeView: View {
                             ForEach(filtered, id: \.self) { url in
                                 Button { open(url) } label: {
                                     HStack(spacing: 12) {
-                                        Image(systemName: "doc.text")
+                                        Image(systemName: ProjectDocument.recentFolders.contains(url) ? "folder" : "doc.text")
                                             .font(.system(size: 24, weight: .regular))
                                             .foregroundStyle(.secondary).frame(width: 30, height: 30)
                                         VStack(alignment: .leading, spacing: 4) {
@@ -79,7 +85,7 @@ struct WelcomeView: View {
             }
 
         }
-        .frame(width: 780, height: 480)
+        .frame(width: 780, height: 540)
         .background(Color(nsColor: .windowBackgroundColor)).ignoresSafeArea()
         .onAppear { refresh() }
         .onReceive(NotificationCenter.default.publisher(for: NSWindow.didBecomeKeyNotification)) { _ in refresh() }
@@ -99,8 +105,9 @@ struct WelcomeView: View {
         }.padding(.vertical, 6).contentShape(Rectangle())
     }
 
-    private func refresh() { recent = NSDocumentController.shared.recentDocumentURLs }
+    private func refresh() { recent = ProjectDocument.recentFolders + NSDocumentController.shared.recentDocumentURLs.filter { !ProjectDocument.recentFolders.contains($0) } }
     private func open(_ url: URL) {
+        if ProjectDocument.recentFolders.contains(url) { ProjectDocument.openFolder(url); refresh(); return }
         opening = url
         NSDocumentController.shared.openDocument(withContentsOf: url, display: true) { _, _, failure in
             DispatchQueue.main.async {

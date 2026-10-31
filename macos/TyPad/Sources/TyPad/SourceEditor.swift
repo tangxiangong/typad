@@ -6,6 +6,45 @@ struct SourceSelection: Equatable {
     let offset: Int
 }
 
+/// Retains the native editor while a project tab is inactive, including undo and viewport.
+@MainActor
+final class SourceEditorSession {
+    var scrollView: NSScrollView?
+    let undoManager = UndoManager()
+    var selectedRanges: [NSValue]?
+    var scrollOrigin: NSPoint?
+    var selectionID: UUID?
+
+    func capture(_ scroll: NSScrollView) {
+        guard let editor = scroll.documentView as? NSTextView else { return }
+        selectedRanges = editor.selectedRanges
+        scrollOrigin = scroll.contentView.bounds.origin
+    }
+
+    func restore(_ scroll: NSScrollView) {
+        guard let editor = scroll.documentView as? NSTextView else { return }
+        scroll.layoutSubtreeIfNeeded()
+        if let container = editor.textContainer { editor.layoutManager?.ensureLayout(for: container) }
+        if let selectedRanges { editor.selectedRanges = selectedRanges }
+        if let scrollOrigin {
+            scroll.contentView.scroll(to: scrollOrigin)
+            scroll.reflectScrolledClipView(scroll.contentView)
+        }
+    }
+}
+
+@MainActor
+final class SourceEditorSessions: ObservableObject {
+    private var values: [URL: SourceEditorSession] = [:]
+    func session(for url: URL) -> SourceEditorSession {
+        if let value = values[url] { return value }
+        let value = SourceEditorSession()
+        values[url] = value
+        return value
+    }
+    func remove(_ url: URL) { values.removeValue(forKey: url) }
+}
+
 /// AppKit supplies native undo, IME composition and the standard find/replace bar.
 @MainActor
 struct SourceEditor: NSViewRepresentable {
@@ -17,11 +56,20 @@ struct SourceEditor: NSViewRepresentable {
     @Binding var assistanceVisible: Bool
     let requestCompletion: (Int) -> Void
     let acceptCompletion: (WorkerCompletion) -> Void
+    var session: SourceEditorSession? = nil
 
     func makeCoordinator() -> Coordinator { Coordinator(self) }
 
     func makeNSView(context: Context) -> NSScrollView {
+        if let scroll = session?.scrollView, let editor = scroll.documentView as? NSTextView {
+            context.coordinator.selectionID = session?.selectionID
+            editor.delegate = context.coordinator
+            let offset = editor.selectedRange().location
+            DispatchQueue.main.async { context.coordinator.parent.cursor = offset }
+            return scroll
+        }
         let scroll = SourceTextView.scrollableTextView()
+        session?.scrollView = scroll
         guard let editor = scroll.documentView as? NSTextView else { return scroll }
         editor.isRichText = false
         editor.isAutomaticQuoteSubstitutionEnabled = false
@@ -30,6 +78,7 @@ struct SourceEditor: NSViewRepresentable {
         editor.isAutomaticSpellingCorrectionEnabled = false
         editor.isAutomaticLinkDetectionEnabled = false
         editor.isContinuousSpellCheckingEnabled = false
+        (editor as? SourceTextView)?.projectUndo = session?.undoManager
         editor.allowsUndo = true
         editor.usesFindBar = true
         editor.isIncrementalSearchingEnabled = true
@@ -95,14 +144,25 @@ struct SourceEditor: NSViewRepresentable {
         }
         if !context.coordinator.didFocus, editor.window != nil {
             context.coordinator.didFocus = true
-            DispatchQueue.main.async { [weak editor] in
-                guard let editor else { return }
+            let coordinator = context.coordinator
+            DispatchQueue.main.async { [weak editor, weak coordinator] in
+                guard let editor, let coordinator, editor.delegate === coordinator, editor.window != nil else { return }
                 editor.window?.makeFirstResponder(editor)
+                coordinator.parent.session?.restore(scroll)
+                if let selection = coordinator.pendingSelection {
+                    let offset = min(selection.offset, (editor.string as NSString).length)
+                    let range = NSRange(location: max(0, offset), length: 0)
+                    editor.setSelectedRange(range)
+                    editor.scrollRangeToVisible(range)
+                }
+                coordinator.parent.cursor = editor.selectedRange().location
             }
         }
         context.coordinator.updateAssistance(editor)
         if let selection, context.coordinator.selectionID != selection.id, !editor.hasMarkedText() {
             context.coordinator.selectionID = selection.id
+            context.coordinator.pendingSelection = selection
+            session?.selectionID = selection.id
             let range = NSRange(location: min(selection.offset, (text as NSString).length), length: 0)
             editor.setSelectedRange(range)
             editor.scrollRangeToVisible(range)
@@ -113,12 +173,17 @@ struct SourceEditor: NSViewRepresentable {
     static func dismantleNSView(_ nsView: NSScrollView, coordinator: Coordinator) {
         coordinator.completionTask?.cancel()
         coordinator.popover.close()
+        if let editor = nsView.documentView as? NSTextView, editor.delegate === coordinator {
+            coordinator.parent.session?.capture(nsView)
+            editor.delegate = nil
+        }
     }
 
     @MainActor
     final class Coordinator: NSObject, NSTextViewDelegate {
         var parent: SourceEditor
         var selectionID: UUID?
+        var pendingSelection: SourceSelection?
         var replacementID: UUID?
         let popover = CompletionWindow()
         weak var editor: NSTextView?
@@ -204,6 +269,10 @@ struct SourceEditor: NSViewRepresentable {
             }
             return false
         }
+        func undoManager(for view: NSTextView) -> UndoManager? {
+            parent.session?.undoManager ?? view.window?.undoManager
+        }
+
         func textViewDidChangeSelection(_ notification: Notification) {
             guard let editor = notification.object as? NSTextView else { return }
             editor.needsDisplay = true
@@ -258,6 +327,8 @@ struct SourceEditor: NSViewRepresentable {
 /// Paint behind the text and selection without changing text attributes or undo history.
 @MainActor
 final class SourceTextView: NSTextView {
+    weak var projectUndo: UndoManager?
+    override var undoManager: UndoManager? { projectUndo ?? super.undoManager }
     override func drawBackground(in rect: NSRect) {
         super.drawBackground(in: rect)
         guard selectedRange().length == 0,

@@ -1,7 +1,7 @@
 //! Snapshot compilation with embedded fonts and project-local resources.
 use std::collections::HashMap;
 use std::path::{Path, PathBuf};
-use std::sync::{Mutex, OnceLock};
+use std::sync::{Arc, Mutex, OnceLock};
 use std::time::Instant;
 use typst::diag::{FileError, FileResult, Severity, SourceDiagnostic};
 use typst::foundations::{Bytes, Datetime, Duration};
@@ -59,6 +59,9 @@ pub fn initialize_fonts(paths: &[String]) {
                 continue;
             };
             for font in Font::iter(Bytes::new(data)) {
+                if !has_drawable_glyph_data(&font) {
+                    continue;
+                }
                 store.push((
                     FontPath {
                         path: PathBuf::from(path),
@@ -72,6 +75,47 @@ pub fn initialize_fonts(paths: &[String]) {
     });
 }
 
+// Some Apple fonts expose a cmap and metrics but use proprietary `hvgl` outlines.
+// Accepting them produces invisible Type 3 glyphs instead of usable PDF text.
+fn has_drawable_glyph_data(font: &Font) -> bool {
+    // Inspect the already-parsed SFNT directory without instantiating/caching every system font.
+    let data = font.data();
+    let u32_at = |offset: usize| -> Option<u32> {
+        Some(u32::from_be_bytes(
+            data.get(offset..offset + 4)?.try_into().ok()?,
+        ))
+    };
+    let offset = if data.starts_with(b"ttcf") {
+        let Some(offset) = u32_at(12 + font.index() as usize * 4) else {
+            return false;
+        };
+        offset as usize
+    } else {
+        0
+    };
+    let Some(count) = data.get(offset + 4..offset + 6) else {
+        return false;
+    };
+    let count = u16::from_be_bytes([count[0], count[1]]) as usize;
+    (0..count).any(|index| {
+        let record = offset + 12 + index * 16;
+        matches!(
+            data.get(record..record + 4),
+            Some(
+                b"glyf"
+                    | b"CFF "
+                    | b"CFF2"
+                    | b"sbix"
+                    | b"CBDT"
+                    | b"bdat"
+                    | b"EBDT"
+                    | b"COLR"
+                    | b"SVG "
+            )
+        ) && u32_at(record + 12).is_some_and(|length| length > 0)
+    })
+}
+
 fn fonts() -> &'static FontStore {
     FONTS.get_or_init(|| {
         let mut store = FontStore::new();
@@ -81,7 +125,11 @@ fn fonts() -> &'static FontStore {
     })
 }
 
+/// Native file-provider reads, called only for validated project-local resources.
+pub type ResourceReader = dyn Fn(&Path) -> Result<Vec<u8>, String> + Send + Sync;
+
 struct SnapshotWorld {
+    reader: Option<Arc<ResourceReader>>,
     library: LazyHash<Library>,
     main: Source,
     root: Option<PathBuf>,
@@ -90,27 +138,67 @@ struct SnapshotWorld {
 }
 
 impl SnapshotWorld {
+    #[cfg(test)]
     fn new(source: &str, path: Option<&Path>) -> Result<Self, String> {
-        let (root, name) = match path {
-            Some(path) if path.is_absolute() => {
-                let parent = path.parent().ok_or("Document has no parent directory")?;
-                let root = parent.canonicalize().map_err(|err| err.to_string())?;
-                let name = path
-                    .file_name()
-                    .and_then(|s| s.to_str())
-                    .ok_or("Invalid document name")?;
-                (Some(root), name)
+        Self::project(source, path, None, &HashMap::new())
+    }
+
+    fn project(
+        source: &str,
+        path: Option<&Path>,
+        project_root: Option<&Path>,
+        snapshots: &HashMap<String, String>,
+    ) -> Result<Self, String> {
+        let root = match project_root.or_else(|| path.and_then(Path::parent)) {
+            Some(root) if root.is_absolute() => {
+                Some(root.canonicalize().map_err(|err| err.to_string())?)
             }
-            Some(_) => return Err("Document path must be absolute".into()),
-            None => (None, "untitled.typ"),
+            Some(_) => return Err("Project root must be absolute".into()),
+            None => None,
         };
-        let vpath = VirtualPath::new(name).map_err(|err| err.to_string())?;
+        let relative = |path: &Path| -> Result<PathBuf, String> {
+            if !path.is_absolute()
+                || path
+                    .components()
+                    .any(|part| matches!(part, std::path::Component::ParentDir))
+            {
+                return Err("Snapshot path must be absolute and inside the project".into());
+            }
+            let canonical = if path.exists() {
+                path.canonicalize().map_err(|err| err.to_string())?
+            } else {
+                path.parent()
+                    .ok_or("Snapshot has no parent")?
+                    .canonicalize()
+                    .map_err(|err| err.to_string())?
+                    .join(path.file_name().ok_or("Snapshot has no filename")?)
+            };
+            canonical
+                .strip_prefix(root.as_ref().ok_or("Snapshot requires a project root")?)
+                .map(Path::to_path_buf)
+                .map_err(|_| "Snapshot is outside the project".into())
+        };
+        let name = match path {
+            Some(path) => relative(path)?,
+            None => PathBuf::from("untitled.typ"),
+        };
+        let vpath = VirtualPath::new(name.to_str().ok_or("Invalid snapshot filename")?)
+            .map_err(|err| err.to_string())?;
+        let mut files = HashMap::new();
+        for (path, source) in snapshots {
+            let name = relative(Path::new(path))?;
+            let vpath = VirtualPath::new(name.to_str().ok_or("Invalid snapshot filename")?)
+                .map_err(|err| err.to_string())?;
+            let id = RootedPath::new(VirtualRoot::Project, vpath).intern();
+            files.insert(id, Ok(Bytes::new(source.as_bytes().to_vec())));
+        }
         let id = RootedPath::new(VirtualRoot::Project, vpath).intern();
         Ok(Self {
+            reader: None,
             library: LazyHash::new(Library::default()),
             main: Source::new(id, source.into()),
             root,
-            files: Mutex::new(HashMap::new()),
+            files: Mutex::new(files),
             time: Time::system(),
         })
     }
@@ -132,6 +220,11 @@ impl SnapshotWorld {
             .map_err(|err| FileError::from_io(err, &path))?;
         if !canonical.starts_with(root) {
             return Err(FileError::AccessDenied);
+        }
+        if let Some(reader) = &self.reader {
+            return reader(&canonical)
+                .map(Bytes::new)
+                .map_err(|message| FileError::Other(Some(message.into())));
         }
         std::fs::read(&canonical)
             .map(Bytes::new)
@@ -178,6 +271,29 @@ impl World for SnapshotWorld {
 /// Compile unsaved main-source text, resolving local resources relative to its saved path.
 /// Unsaved documents can compile standalone content. Package downloads are not performed.
 pub fn compile(source: &str, path: Option<&Path>, revision: u64) -> CompileOutput {
+    compile_project(source, path, None, &HashMap::new(), revision)
+}
+
+/// Compile immutable open buffers within an explicit project root.
+pub fn compile_project(
+    source: &str,
+    path: Option<&Path>,
+    root: Option<&Path>,
+    snapshots: &HashMap<String, String>,
+    revision: u64,
+) -> CompileOutput {
+    compile_project_with_reader(source, path, root, snapshots, revision, None)
+}
+
+/// Compile with a native coordinator for disk resources not supplied as open buffers.
+pub fn compile_project_with_reader(
+    source: &str,
+    path: Option<&Path>,
+    root: Option<&Path>,
+    snapshots: &HashMap<String, String>,
+    revision: u64,
+    reader: Option<Arc<ResourceReader>>,
+) -> CompileOutput {
     let started = Instant::now();
     let mut result = CompileOutput {
         revision,
@@ -186,8 +302,9 @@ pub fn compile(source: &str, path: Option<&Path>, revision: u64) -> CompileOutpu
         elapsed_ms: 0,
         page_count: 0,
     };
-    match SnapshotWorld::new(source, path) {
-        Ok(world) => {
+    match SnapshotWorld::project(source, path, root, snapshots) {
+        Ok(mut world) => {
+            world.reader = reader;
             return compile_world(&world, revision);
         }
         Err(message) => result.diagnostics.push(CompileDiagnostic {
@@ -268,6 +385,93 @@ mod tests {
     use typst::layout::{Frame, FrameItem};
     use typst::text::TextItem;
 
+    #[test]
+    fn project_snapshot_overrides_disk_and_does_not_leak_between_compiles() {
+        let dir = tempfile::tempdir().unwrap();
+        let root = dir.path();
+        std::fs::create_dir(root.join("src")).unwrap();
+        let main = root.join("src/main.typ");
+        let child = root.join("child.typ");
+        std::fs::write(&main, "").unwrap();
+        std::fs::write(&child, "#let broken =").unwrap();
+        let files = HashMap::from([(
+            child.to_string_lossy().into_owned(),
+            "Snapshot child".into(),
+        )]);
+        let output = compile_project(
+            "#include \"/child.typ\"",
+            Some(&main),
+            Some(root),
+            &files,
+            7,
+        );
+        assert!(output.pdf.is_some(), "{:?}", output.diagnostics);
+        let output = compile_project(
+            "#include \"/child.typ\"",
+            Some(&main),
+            Some(root),
+            &HashMap::new(),
+            8,
+        );
+        assert!(output.pdf.is_none());
+    }
+
+    #[test]
+    fn native_reader_supplies_unopened_resources_and_reports_read_errors() {
+        let dir = tempfile::tempdir().unwrap();
+        let main = dir.path().join("main.typ");
+        let child = dir.path().join("child.typ");
+        std::fs::write(&main, "").unwrap();
+        std::fs::write(&child, "#let invalid =").unwrap();
+        let reader: Arc<ResourceReader> = Arc::new(move |path| {
+            assert_eq!(path.file_name().unwrap(), "child.typ");
+            Ok(b"Native coordinated contents".to_vec())
+        });
+        let result = compile_project_with_reader(
+            "#include \"child.typ\"",
+            Some(&main),
+            Some(dir.path()),
+            &HashMap::new(),
+            0,
+            Some(reader),
+        );
+        assert!(result.pdf.is_some(), "{:?}", result.diagnostics);
+        let result = compile_project_with_reader(
+            "#include \"child.typ\"",
+            Some(&main),
+            Some(dir.path()),
+            &HashMap::new(),
+            0,
+            Some(Arc::new(|_| Err("Provider refused access".into()))),
+        );
+        assert!(
+            result
+                .diagnostics
+                .iter()
+                .any(|item| item.message.contains("Provider refused access"))
+        );
+    }
+
+    #[test]
+    fn project_snapshots_reject_outside_and_traversal_paths() {
+        let dir = tempfile::tempdir().unwrap();
+        let root = dir.path();
+        let main = root.join("main.typ");
+        std::fs::write(&main, "").unwrap();
+        for path in [
+            root.join("../escape.typ"),
+            PathBuf::from("relative.typ"),
+            std::env::temp_dir().join("outside.typ"),
+        ] {
+            let files = HashMap::from([(path.to_string_lossy().into_owned(), "forbidden".into())]);
+            assert!(
+                compile_project("Hello", Some(&main), Some(root), &files, 0)
+                    .pdf
+                    .is_none()
+            );
+        }
+    }
+
     fn text_items(frame: &Frame) -> Vec<&TextItem> {
         let mut items = Vec::new();
         for (_, item) in frame.items() {
@@ -278,6 +482,43 @@ mod tests {
             }
         }
         items
+    }
+
+    #[test]
+    fn bundled_chinese_fonts_have_real_outlines_and_metrics_only_fonts_are_rejected() {
+        let sources: [&[u8]; 2] = [
+            include_bytes!("../../../ipad/Resources/Fonts/NotoSansSC-Regular.otf"),
+            include_bytes!("../../../ipad/Resources/Fonts/NotoSansSC-Bold.otf"),
+        ];
+        for data in sources {
+            let font = Font::new(Bytes::new(data.to_vec()), 0).unwrap();
+            assert!(has_drawable_glyph_data(&font));
+            let instance = font.clone().instantiate(
+                Default::default(),
+                typst::layout::Abs::pt(12.0),
+                &Default::default(),
+            );
+            for ch in "中文简体繁體身上".chars() {
+                let glyph = instance.ttf().glyph_index(ch).unwrap();
+                assert!(
+                    instance.ttf().glyph_bounding_box(glyph).is_some(),
+                    "No outline for {ch}"
+                );
+            }
+            let mut metrics_only = data.to_vec();
+            let count = u16::from_be_bytes([data[4], data[5]]) as usize;
+            for index in 0..count {
+                let offset = 12 + 16 * index;
+                if &metrics_only[offset..offset + 4] == b"CFF " {
+                    metrics_only[offset..offset + 4].copy_from_slice(b"hvgl");
+                }
+            }
+            let font = Font::new(Bytes::new(metrics_only), 0).unwrap();
+            assert!(
+                !has_drawable_glyph_data(&font),
+                "Metrics without supported outlines must not win font fallback"
+            );
+        }
     }
 
     #[test]

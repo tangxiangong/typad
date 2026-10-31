@@ -43,6 +43,8 @@ private struct WorkerRequest: Encodable {
     let source: String
     let path: String?
     let offset: Int
+    let root: String?
+    let files: [String: String]
 }
 
 enum WorkerFailure: LocalizedError {
@@ -82,10 +84,10 @@ final class WorkerClient {
         self.timeout = timeoutSeconds
     }
 
-    func request(operation: String, source: String, path: String?, revision: UInt64, offset: Int = 0) async throws -> WorkerResult {
+    func request(operation: String, source: String, path: String?, revision: UInt64, offset: Int = 0, root: String? = nil, files: [String: String] = [:]) async throws -> WorkerResult {
         // One bounded automatic restart, always resending the full unsaved snapshot.
         for attempt in 0...1 {
-            do { return try await send(operation: operation, source: source, path: path, revision: revision, offset: offset) }
+            do { return try await send(operation: operation, source: source, path: path, revision: revision, offset: offset, root: root, files: files) }
             catch {
                 if closed || Task.isCancelled { throw CancellationError() }
                 if case WorkerFailure.operation = error { throw error }
@@ -146,12 +148,12 @@ final class WorkerClient {
         }
     }
 
-    private func send(operation: String, source: String, path: String?, revision: UInt64, offset: Int) async throws -> WorkerResult {
+    private func send(operation: String, source: String, path: String?, revision: UInt64, offset: Int, root: String?, files: [String: String]) async throws -> WorkerResult {
         try Task.checkCancellation()
         try start()
         nextID &+= 1
         let id = nextID, token = generation
-        var data = try JSONEncoder().encode(WorkerRequest(id: id, revision: revision, operation: operation, source: source, path: path, offset: offset))
+        var data = try JSONEncoder().encode(WorkerRequest(id: id, revision: revision, operation: operation, source: source, path: path, offset: offset, root: root, files: files))
         guard data.count < 16 * 1024 * 1024 else { throw WorkerFailure.operation(String(localized: "Document exceeds the worker request limit.")) }
         data.append(10)
         let frame = data

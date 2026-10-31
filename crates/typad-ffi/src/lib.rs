@@ -51,3 +51,39 @@ pub fn compile_document(source: String, path: Option<String>, revision: u64) -> 
 pub fn initialize_fonts(paths: Vec<String>) {
     typad_service::api::initialize_fonts(&paths);
 }
+
+/// Compile a project snapshot, including unsaved child files.
+#[uniffi::export]
+pub fn compile_project(
+    source: String,
+    path: String,
+    root: String,
+    files: std::collections::HashMap<String, String>,
+    revision: u64,
+    reader: Box<dyn ProjectFileReader>,
+) -> CompileOutput {
+    typad_service::api::compile_project(
+        &source,
+        &path,
+        &root,
+        &files,
+        revision,
+        std::sync::Arc::new(move |path| {
+            let result = reader.read_file(path.to_string_lossy().into_owned());
+            result.bytes.ok_or(result.error)
+        }),
+    )
+}
+
+/// Result of a native coordinated resource read.
+#[derive(uniffi::Record)]
+pub struct ProjectFileContents {
+    pub bytes: Option<Vec<u8>>,
+    pub error: String,
+}
+
+/// Native hosts coordinate each dependency with their file provider.
+#[uniffi::export(callback_interface)]
+pub trait ProjectFileReader: Send + Sync {
+    fn read_file(&self, path: String) -> ProjectFileContents;
+}

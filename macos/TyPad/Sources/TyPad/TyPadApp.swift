@@ -17,6 +17,11 @@ struct TyPadApp: App {
         .defaultSize(width: 1100, height: 700)
         .commands {
             TextEditingCommands()
+            CommandGroup(after: .newItem) {
+                Button("New Project…") { ProjectDocument.createFolder() }
+                Button("Open Project…") { ProjectDocument.chooseFolder() }
+                    .keyboardShortcut("o", modifiers: [.command, .option])
+            }
             CommandGroup(after: .windowArrangement) {
                 Button("Show Welcome Window") { openWindow(id: "welcome") }
                     .keyboardShortcut("t", modifiers: [.control, .command])

@@ -27,3 +27,22 @@ pub fn compile_document(
 pub fn initialize_fonts(paths: &[String]) {
     typad_core::compiler::initialize_fonts(paths);
 }
+
+/// Compile with native file-provider access for each on-disk dependency.
+pub fn compile_project(
+    source: &str,
+    path: &str,
+    root: &str,
+    files: &std::collections::HashMap<String, String>,
+    revision: u64,
+    reader: std::sync::Arc<typad_core::compiler::ResourceReader>,
+) -> crate::records::CompileOutput {
+    typad_core::compiler::compile_project_with_reader(
+        source,
+        Some(std::path::Path::new(path)),
+        Some(std::path::Path::new(root)),
+        files,
+        revision,
+        Some(reader),
+    )
+}

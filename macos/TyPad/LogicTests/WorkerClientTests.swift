@@ -35,6 +35,11 @@ struct WorkerClientTests {
         let temp = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         try FileManager.default.createDirectory(at: temp, withIntermediateDirectories: true)
         defer { try? FileManager.default.removeItem(at: temp) }
+        let main = temp.appendingPathComponent("main.typ")
+        let child = temp.appendingPathComponent("child.typ")
+        try Data("#unknown_disk_symbol".utf8).write(to: child)
+        let multi = try await clientAfterClose(binary, main: main, child: child, root: temp)
+        precondition(multi)
         setenv("TYPAD_WORKER_TEST_BINARY", binary.path, 1)
         let fixture = root.appendingPathComponent("ci/fixtures/worker-failure.py")
         for mode in ["once", "always", "hang"] {
@@ -54,5 +59,26 @@ struct WorkerClientTests {
             precondition(starts == "2", "Expected one bounded restart; got \(starts)")
             print("PASS: \(mode) — exactly one restart, full unsaved snapshot replay or bounded failure")
         }
+    }
+
+    @MainActor
+    static func clientAfterClose(_ binary: URL, main: URL, child: URL, root: URL) async throws -> Bool {
+        let client = WorkerClient(executable: binary, timeoutSeconds: 30)
+        defer { client.close() }
+        let source = "#include \"child.typ\""
+        let result = try await client.request(operation: "compile", source: source, path: main.path,
+            revision: 100, root: root.path, files: [child.path: "= Unsaved child 中文"])
+        precondition(result.pdf != nil, "Unsaved child must replace invalid disk content")
+        let discarded = try await client.request(operation: "compile", source: source, path: main.path,
+            revision: 101, root: root.path)
+        precondition(discarded.pdf == nil, "Discarded buffer must not remain mapped")
+        let subfolder = root.appendingPathComponent("chapters")
+        try FileManager.default.createDirectory(at: subfolder, withIntermediateDirectories: true)
+        let nested = try await client.request(operation: "compile", source: "#include \"../child.typ\"",
+            path: subfolder.appendingPathComponent("nested.typ").path, revision: 102, root: root.path,
+            files: [child.path: "Nested root works"])
+        precondition(nested.pdf != nil, "Main document in a subfolder must use project root")
+        print("PASS: multi-file unsaved snapshots, removed shadows and nested main document")
+        return true
     }
 }

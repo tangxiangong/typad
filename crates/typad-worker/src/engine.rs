@@ -2,7 +2,7 @@ use crate::Request;
 use base64::{Engine as _, engine::general_purpose::STANDARD};
 use lsp_types::{HoverContents, MarkedString};
 use serde_json::{Value, json};
-use std::path::PathBuf;
+use std::path::{Component, Path, PathBuf};
 use tinymist_project::{LspUniverse, WorldProvider};
 use tinymist_query::{
     CompletionRequest, HoverRequest, PositionEncoding, SemanticRequest, analysis::Analysis,
@@ -12,7 +12,7 @@ use typst::{World, foundations::Bytes, syntax::Source};
 
 #[derive(Default)]
 pub(super) struct Engine {
-    universe: Option<(PathBuf, LspUniverse)>,
+    universe: Option<(PathBuf, PathBuf, LspUniverse)>,
     analysis: Analysis,
 }
 
@@ -26,23 +26,48 @@ impl Engine {
         if !path.is_absolute() {
             return Err("Document path must be absolute".into());
         }
-        if self.universe.as_ref().is_none_or(|(old, _)| old != &path) {
+        let root = request
+            .root
+            .as_ref()
+            .map(PathBuf::from)
+            .or_else(|| path.parent().map(PathBuf::from))
+            .ok_or("Missing project root")?;
+        validate_path(&path, &root)?;
+        for file in request.files.keys() {
+            validate_path(Path::new(file), &root)?;
+        }
+        if self
+            .universe
+            .as_ref()
+            .is_none_or(|(old, old_root, _)| old != &path || old_root != &root)
+        {
             let args = CompileOnceArgs {
                 input: Some(path.to_string_lossy().into_owned()),
-                root: path.parent().map(PathBuf::from),
+                root: Some(root.clone()),
                 ..Default::default()
             };
-            self.universe = Some((path.clone(), args.resolve().map_err(|e| e.to_string())?));
+            self.universe = Some((
+                path.clone(),
+                root,
+                args.resolve().map_err(|e| e.to_string())?,
+            ));
             self.analysis = Analysis {
                 position_encoding: PositionEncoding::Utf16,
                 ..Default::default()
             };
         }
-        let (_, universe) = self
+        let (_, _, universe) = self
             .universe
             .as_mut()
             .ok_or("Missing document environment")?;
         universe.reset();
+        // Each request is a complete snapshot: closing/discarding a tab removes its shadow.
+        universe.reset_shadow();
+        for (file, source) in &request.files {
+            universe
+                .map_shadow(Path::new(file), Bytes::new(source.as_bytes().to_vec()))
+                .map_err(|e| e.to_string())?;
+        }
         universe
             .map_shadow(&path, Bytes::new(request.source.as_bytes().to_vec()))
             .map_err(|e| e.to_string())?;
@@ -128,6 +153,21 @@ impl Engine {
     }
 }
 
+fn validate_path(path: &Path, root: &Path) -> Result<(), String> {
+    if !root.is_absolute()
+        || !path.is_absolute()
+        || root
+            .components()
+            .chain(path.components())
+            .any(|c| matches!(c, Component::ParentDir))
+        || !path.starts_with(root)
+        || path == root
+    {
+        return Err("Snapshot paths must be absolute and inside the project root".into());
+    }
+    Ok(())
+}
+
 fn marked(value: MarkedString) -> String {
     match value {
         MarkedString::String(value) => value,
@@ -202,6 +242,20 @@ fn plain_snippet(input: &str) -> Option<String> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn snapshot_paths_reject_traversal_and_outside_roots() {
+        let root = Path::new("/project");
+        assert!(validate_path(Path::new("/project/chapters/a.typ"), root).is_ok());
+        for path in [
+            "relative.typ",
+            "/other/a.typ",
+            "/project/../outside.typ",
+            "/project",
+        ] {
+            assert!(validate_path(Path::new(path), root).is_err());
+        }
+    }
+
     #[test]
     fn expands_placeholders_without_inserting_snippet_markup() {
         assert_eq!(

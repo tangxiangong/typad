@@ -11,7 +11,10 @@ private let platformFonts: Void = {
               url.isFileURL else { return nil }
         return url.path
     }).sorted()
-    initializeFonts(paths: paths)
+    let bundled = ["NotoSansSC-Regular", "NotoSansSC-Bold"].compactMap {
+        Bundle.main.url(forResource: $0, withExtension: "otf", subdirectory: "Fonts")?.path
+    }
+    initializeFonts(paths: bundled + paths)
 }()
 
 /// Serializes native compilation across windows to bound peak memory usage.
@@ -33,10 +36,12 @@ final class LocalPreviewModel: ObservableObject {
         let source: String
         let url: URL?
         let resourceFolder: URL?
+        let files: [String: String]
+        let projectRoot: URL?
         let revision: UInt64
     }
 
-    func update(source: String, url: URL?, resourceFolder: URL?, automatic: Bool, immediate: Bool = false) {
+    func update(source: String, url: URL?, resourceFolder: URL?, automatic: Bool, immediate: Bool = false, projectRoot: URL? = nil, files: [String: String] = [:]) {
         revision &+= 1
         isStale = true
         diagnostics = []
@@ -46,7 +51,7 @@ final class LocalPreviewModel: ObservableObject {
             status = String(localized: "Auto compile paused")
             return
         }
-        let snapshot = Snapshot(source: source, url: url, resourceFolder: resourceFolder, revision: revision)
+        let snapshot = Snapshot(source: source, url: url, resourceFolder: resourceFolder, files: files, projectRoot: projectRoot, revision: revision)
         status = String(localized: "Waiting to compile")
         debounce = Task { [weak self] in
             if !immediate {
@@ -65,6 +70,14 @@ final class LocalPreviewModel: ObservableObject {
         pending = nil
     }
 
+    func waitForMainDocument() {
+        stop()
+        pdf = nil
+        diagnostics = []
+        isStale = true
+        status = String(localized: "Choose a main Typst document")
+    }
+
     private func startNext() {
         guard !isCompiling, let snapshot = pending else { return }
         pending = nil
@@ -81,8 +94,13 @@ final class LocalPreviewModel: ObservableObject {
                         if fileAccess { snapshot.url?.stopAccessingSecurityScopedResource() }
                         if folderAccess { snapshot.resourceFolder?.stopAccessingSecurityScopedResource() }
                     }
-                    continuation.resume(returning: compileDocument(source: snapshot.source,
-                        path: snapshot.url?.path, revision: snapshot.revision))
+                    if let root = snapshot.projectRoot, let url = snapshot.url {
+                        continuation.resume(returning: compileProject(source: snapshot.source, path: url.path,
+                            root: root.path, files: snapshot.files, revision: snapshot.revision, reader: CoordinatedProjectReader()))
+                    } else {
+                        continuation.resume(returning: compileDocument(source: snapshot.source,
+                            path: snapshot.url?.path, revision: snapshot.revision))
+                    }
                 }
             }
             guard let self else { return }
@@ -100,5 +118,18 @@ final class LocalPreviewModel: ObservableObject {
             isCompiling = false
             startNext()
         }
+    }
+}
+
+/// Rust calls this on the compilation queue for each disk dependency, including images.
+private final class CoordinatedProjectReader: ProjectFileReader, @unchecked Sendable {
+    func readFile(path: String) -> ProjectFileContents {
+        let url = URL(fileURLWithPath: path)
+        do {
+            let data = try ProjectFileAccess.read(url) { coordinatedURL in
+                return try Data(contentsOf: coordinatedURL)
+            }
+            return ProjectFileContents(bytes: data, error: "")
+        } catch { return ProjectFileContents(bytes: nil, error: error.localizedDescription) }
     }
 }

@@ -4,6 +4,10 @@ import UniformTypeIdentifiers
 struct IPadEditorView: View {
     @Binding var document: TypstDocument
     let fileURL: URL?
+    @ObservedObject var workspace: ProjectWorkspace = ProjectWorkspace()
+    var projectAccessURL: URL? = nil
+    @StateObject private var sessions = IPadEditorSessions()
+    @Environment(\.openWindow) private var openWindow
     @StateObject private var preview = LocalPreviewModel()
     @State private var automatic = true
     @State private var showPreview = false
@@ -18,7 +22,7 @@ struct IPadEditorView: View {
             VStack(spacing: 0) {
                 if geometry.size.width >= 760 {
                     HStack(spacing: 0) {
-                        IPadSourceEditor(source: $document.source)
+                        sourceEditor
                         Divider()
                         previewPane
                     }
@@ -30,7 +34,7 @@ struct IPadEditorView: View {
                     .pickerStyle(.segmented)
                     .padding(.horizontal)
                     if showPreview { previewPane }
-                    else { IPadSourceEditor(source: $document.source) }
+                    else { sourceEditor }
                 }
                 Divider()
                 HStack {
@@ -54,16 +58,42 @@ struct IPadEditorView: View {
                 Button { compile(immediate: true) } label: { Label("Compile", systemImage: "play") }
                     .keyboardShortcut("b", modifiers: .command)
                 Menu {
+                    let session = sessions.session(for: workspace.root == nil ? nil : fileURL)
+                    let history = session.view?.undoManager
+                    Button {
+                        history?.undo()
+                        if let view = session.view {
+                            document.source = view.text
+                            session.selection = view.selectedRange
+                            session.offset = view.contentOffset
+                        }
+                        sessions.objectWillChange.send()
+                    } label: { Label("Undo", systemImage: "arrow.uturn.backward") }
+                        .disabled(history?.canUndo != true)
+                    Button {
+                        history?.redo()
+                        if let view = session.view {
+                            document.source = view.text
+                            session.selection = view.selectedRange
+                            session.offset = view.contentOffset
+                        }
+                        sessions.objectWillChange.send()
+                    } label: { Label("Redo", systemImage: "arrow.uturn.forward") }
+                        .disabled(history?.canRedo != true)
+                    Divider()
                     Toggle("Live preview", isOn: $automatic)
-                    Button { chooseFolder = true } label: { Label("Allow Resource Folder…", systemImage: "folder") }
+                    if workspace.root == nil { Button { chooseFolder = true } label: { Label("Allow Resource Folder…", systemImage: "folder") } }
+                    Button("Projects") { openWindow(id: "projects") }
                     Button { exportPDF = true } label: { Label("Export PDF…", systemImage: "square.and.arrow.up") }
                         .disabled(preview.pdf == nil || preview.isStale)
                 } label: { Label("Document options", systemImage: "ellipsis.circle") }
             }
         }
         .onAppear { compile() }
-        .onChange(of: document.source) { compile() }
-        .onChange(of: fileURL) { resourceFolder = nil; compile() }
+        .onChange(of: document.source) { if workspace.root == nil { compile() } }
+        .onChange(of: workspace.revision) { compile() }
+        .onChange(of: workspace.buffers.map(\.url)) { sessions.retain(workspace.buffers.map(\.url)) }
+        .onChange(of: fileURL) { if workspace.root == nil { resourceFolder = nil; compile() } }
         .onChange(of: automatic) { compile() }
         .onDisappear { preview.stop() }
         .sheet(isPresented: $showIssues) {
@@ -89,12 +119,17 @@ struct IPadEditorView: View {
             }
         }
         .fileExporter(isPresented: $exportPDF, document: PDFExportDocument(data: preview.pdf ?? Data()),
-                      contentType: .pdf, defaultFilename: fileURL?.deletingPathExtension().lastPathComponent ?? "Untitled") { result in
+                      contentType: .pdf, defaultFilename: (workspace.mainURL ?? fileURL)?.deletingPathExtension().lastPathComponent ?? "Untitled") { result in
             if case .failure(let error) = result { fileError = error.localizedDescription }
         }
         .alert("File operation failed", isPresented: Binding(get: { fileError != nil }, set: { if !$0 { fileError = nil } })) {
             Button("OK") { fileError = nil }
         } message: { Text(fileError ?? "") }
+    }
+
+    private var sourceEditor: some View {
+        let key = workspace.root == nil ? nil : fileURL
+        return IPadSourceEditor(source: $document.source, session: sessions.session(for: key)).id(key)
     }
 
     @ViewBuilder private var previewPane: some View {
@@ -112,8 +147,13 @@ struct IPadEditorView: View {
     }
 
     private func compile(immediate: Bool = false) {
-        preview.update(source: document.source, url: fileURL, resourceFolder: resourceFolder,
-                       automatic: automatic, immediate: immediate)
+        if workspace.root != nil, workspace.mainURL == nil {
+            preview.waitForMainDocument()
+            return
+        }
+        preview.update(source: workspace.main?.source ?? document.source, url: workspace.mainURL ?? fileURL,
+                       resourceFolder: projectAccessURL ?? workspace.root ?? resourceFolder, automatic: automatic, immediate: immediate,
+                       projectRoot: workspace.root, files: workspace.snapshots)
     }
 }
 

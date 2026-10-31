@@ -14,6 +14,10 @@ struct Request {
     path: Option<String>,
     #[serde(default)]
     offset: usize,
+    #[serde(default)]
+    root: Option<String>,
+    #[serde(default)]
+    files: std::collections::BTreeMap<String, String>,
 }
 
 fn main() {
