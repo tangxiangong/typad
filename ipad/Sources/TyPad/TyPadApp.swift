@@ -2,6 +2,7 @@ import SwiftUI
 
 @main
 struct TyPadIPadApp: App {
+    init() { EditorPreferences.migrate() }
     var body: some Scene {
         if #available(iOS 18.0, *) {
             DocumentGroupLaunchScene("TyPad") { IPadLaunchActions() }

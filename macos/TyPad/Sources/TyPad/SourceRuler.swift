@@ -3,6 +3,7 @@ import AppKit
 /// Line numbers follow text layout, including wrapped lines and the final empty line.
 final class SourceRuler: NSRulerView {
     private weak var editor: NSTextView?
+    var numberColor = NSColor.secondaryLabelColor
     private var starts = [0]
     override var isFlipped: Bool { true }
 
@@ -29,7 +30,7 @@ final class SourceRuler: NSRulerView {
 
     override func drawHashMarksAndLabels(in rect: NSRect) {
         guard let editor, let manager = editor.layoutManager, let container = editor.textContainer else { return }
-        NSColor.textBackgroundColor.setFill()
+        editor.backgroundColor.setFill()
         bounds.fill()
         let origin = editor.textContainerOrigin
         let visible = editor.visibleRect.offsetBy(dx: -origin.x, dy: -origin.y)
@@ -42,7 +43,7 @@ final class SourceRuler: NSRulerView {
         }
         let attributes: [NSAttributedString.Key: Any] = [
             .font: NSFont.monospacedDigitSystemFont(ofSize: 11, weight: .regular),
-            .foregroundColor: NSColor.tertiaryLabelColor
+            .foregroundColor: numberColor
         ]
         let length = (editor.string as NSString).length
         for line in max(0, low - 1)..<starts.count {

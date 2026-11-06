@@ -72,6 +72,10 @@ final class SourceEditorSessions: ObservableObject {
 /// AppKit supplies native undo, IME composition and the standard find/replace bar.
 @MainActor
 struct SourceEditor: NSViewRepresentable {
+    @AppStorage("editorFontName") private var fontName = ""
+    @AppStorage("editorFontSize") private var fontSize = 14.0
+    private var preferences = EditorPreferences()
+    private var theme: EditorTheme { preferences.theme }
     @Binding var text: String
     let selection: SourceSelection?
     @Binding var cursor: Int
@@ -140,6 +144,7 @@ struct SourceEditor: NSViewRepresentable {
     func updateNSView(_ scroll: NSScrollView, context: Context) {
         context.coordinator.parent = self
         guard let editor = scroll.documentView as? NSTextView else { return }
+        context.coordinator.applyStyle(editor)
         if editor.string != text, !editor.hasMarkedText() {
             let oldSelection = editor.selectedRange()
             editor.undoManager?.removeAllActions()
@@ -222,6 +227,7 @@ struct SourceEditor: NSViewRepresentable {
     @MainActor
     final class Coordinator: NSObject, NSTextViewDelegate {
         var parent: SourceEditor
+        var appliedStyle: String?
         var selectionID: UUID?
         var pendingSelection: SourceSelection?
         var symbolInsertionID: UUID?
@@ -336,18 +342,41 @@ struct SourceEditor: NSViewRepresentable {
             DispatchQueue.main.async { [weak self] in self?.parent.cursor = offset }
         }
         // Lightweight syntax colors; this does not change the source or undo history.
+        func applyStyle(_ editor: NSTextView) {
+            guard !editor.hasMarkedText() else { return }
+            let key = "\(parent.fontName):\(parent.fontSize):\(parent.theme.rawValue):\(parent.preferences.scheme)"
+            guard key != appliedStyle else { return }
+            appliedStyle = key
+            let colors = parent.theme.colors
+            editor.font = editorFont(name: parent.fontName, size: parent.fontSize)
+            editor.backgroundColor = colors[0]
+            editor.textColor = colors[1]
+            editor.insertionPointColor = colors[1]
+            editor.selectedTextAttributes = [.backgroundColor: parent.theme == .system
+                ? NSColor.selectedTextBackgroundColor : colors[4].withAlphaComponent(0.3)]
+            editor.appearance = NSAppearance(named: parent.preferences.scheme == .light ? .aqua : .darkAqua)
+            editor.enclosingScrollView?.backgroundColor = colors[0]
+            if let ruler = editor.enclosingScrollView?.verticalRulerView as? SourceRuler {
+                ruler.numberColor = colors[2]
+                ruler.updateLines()
+            }
+            highlight(editor)
+            editor.needsDisplay = true
+        }
+
         func highlight(_ editor: NSTextView) {
             guard !editor.hasMarkedText(), let storage = editor.textStorage else { return }
             let full = NSRange(location: 0, length: storage.length)
+            let colors = parent.theme.colors
             let rules: [(String, NSColor)] = [
-                (#"(?m)^={1,6}\s+.*$"#, .systemPurple),
-                (#"#[\p{L}_][\p{L}\p{N}_-]*"#, .systemBlue),
-                (#"\b[0-9]+(?:\.[0-9]+)?(?:pt|mm|cm|em|%)?"#, .systemOrange),
-                (#""(?:[^"\\]|\\.)*""#, .systemRed),
-                (#"(?m)//.*$"#, .secondaryLabelColor)
+                (#"(?m)^={1,6}\s+.*$"#, colors[3]),
+                (#"#[\p{L}_][\p{L}\p{N}_-]*"#, colors[4]),
+                (#"\b[0-9]+(?:\.[0-9]+)?(?:pt|mm|cm|em|%)?"#, colors[5]),
+                (#""(?:[^"\\]|\\.)*""#, colors[6]),
+                (#"(?m)//.*$"#, colors[2])
             ]
             storage.beginEditing()
-            storage.addAttribute(.foregroundColor, value: NSColor.textColor, range: full)
+            storage.addAttribute(.foregroundColor, value: colors[1], range: full)
             for (pattern, color) in rules {
                 guard let regex = try? NSRegularExpression(pattern: pattern) else { continue }
                 for match in regex.matches(in: editor.string, range: full) {
@@ -355,13 +384,14 @@ struct SourceEditor: NSViewRepresentable {
                 }
             }
             storage.endEditing()
-            editor.typingAttributes[.foregroundColor] = NSColor.textColor
+            editor.typingAttributes[.foregroundColor] = colors[1]
         }
 
         func textDidChange(_ notification: Notification) {
             guard let editor = notification.object as? NSTextView else { return }
             editor.needsDisplay = true
             parent.text = editor.string
+            applyStyle(editor)
             highlight(editor)
             completionTask?.cancel()
             let source = editor.string

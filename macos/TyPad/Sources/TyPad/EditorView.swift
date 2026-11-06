@@ -12,6 +12,8 @@ private enum WorkspaceLayout: String, CaseIterable {
 }
 
 struct EditorView: View {
+    private var preferences = EditorPreferences()
+    private var theme: EditorTheme { preferences.theme }
     @Binding var document: TypstDocument
     let fileURL: URL?
     @ObservedObject var workspace = ProjectWorkspace()
@@ -73,6 +75,8 @@ struct EditorView: View {
             Divider()
             statusBar
         }
+        .preferredColorScheme(preferences.appearance.scheme)
+        .tint(Color(nsColor: theme.colors[4]))
         .frame(minWidth: 780, minHeight: 480)
         .background(WorkspaceRestoration(key: stateKey.map { $0 + ":" + layout.rawValue + ":" + String(secondaryURL != nil) }))
         .toolbar {

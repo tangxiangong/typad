@@ -2,10 +2,13 @@ import SwiftUI
 import UIKit
 
 struct IPadSourceEditor: UIViewRepresentable {
+    @AppStorage("editorFontName") private var fontName = ""
+    @AppStorage("editorFontSize") private var fontSize = 14.0
+    private var preferences = EditorPreferences()
     @Binding var source: String
     var session: IPadEditorSession? = nil
 
-    func makeCoordinator() -> Coordinator { Coordinator(source: $source, session: session) }
+    func makeCoordinator() -> Coordinator { Coordinator(parent: self) }
 
     func makeUIView(context: Context) -> UITextView {
         if let view = session?.view {
@@ -43,7 +46,8 @@ struct IPadSourceEditor: UIViewRepresentable {
     }
 
     func updateUIView(_ view: UITextView, context: Context) {
-        context.coordinator.source = $source
+        context.coordinator.parent = self
+        context.coordinator.applyStyle(view)
         // Never replace marked text while the user is composing Chinese or another IME.
         guard view.markedTextRange == nil, !view.text.utf16.elementsEqual(source.utf16) else { return }
         let selection = view.selectedRange
@@ -62,13 +66,31 @@ struct IPadSourceEditor: UIViewRepresentable {
     }
 
     final class Coordinator: NSObject, UITextViewDelegate {
-        var source: Binding<String>
-        let session: IPadEditorSession?
-        init(source: Binding<String>, session: IPadEditorSession?) { self.source = source; self.session = session }
+        var parent: IPadSourceEditor
+        var session: IPadEditorSession? { parent.session }
+        private var appliedStyle: String?
+        init(parent: IPadSourceEditor) { self.parent = parent }
+        func applyStyle(_ view: UITextView) {
+            guard view.markedTextRange == nil else { return }
+            let theme = parent.preferences.theme
+            let key = "\(parent.fontName):\(parent.fontSize):\(theme.rawValue):\(parent.preferences.scheme):\(view.traitCollection.preferredContentSizeCategory.rawValue)"
+            guard key != appliedStyle else { return }
+            appliedStyle = key
+            let selection = view.selectedRange
+            let offset = view.contentOffset
+            view.font = editorFont(name: parent.fontName, size: parent.fontSize)
+            view.backgroundColor = theme.colors[0]
+            view.textColor = theme.colors[1]
+            view.tintColor = theme.colors[4]
+            view.overrideUserInterfaceStyle = parent.preferences.scheme == .dark ? .dark : .light
+            view.selectedRange = selection
+            view.setContentOffset(offset, animated: false)
+        }
         func textViewDidChange(_ textView: UITextView) {
             guard textView.markedTextRange == nil else { return }
             (textView as? IPadTextView)?.recordChange()
-            source.wrappedValue = textView.text
+            parent.source = textView.text
+            applyStyle(textView)
         }
         func textViewDidChangeSelection(_ textView: UITextView) {
             (textView as? IPadTextView)?.recordSelection()

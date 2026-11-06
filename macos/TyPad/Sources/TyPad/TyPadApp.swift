@@ -5,6 +5,7 @@ import SwiftUI
 @MainActor
 enum TyPadEntryPoint {
     static func main() {
+        EditorPreferences.migrate()
         _ = TyPadApplication.shared
         TyPadApp.main()
     }
@@ -19,6 +20,8 @@ struct TyPadApp: App {
         }
         .windowStyle(.hiddenTitleBar)
         .windowResizability(.contentSize)
+
+        Settings { EditorSettingsView() }
 
         DocumentGroup(newDocument: TypstDocument()) { file in
             EditorView(document: file.$document, fileURL: file.fileURL)

@@ -2,6 +2,8 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct IPadEditorView: View {
+    private var preferences = EditorPreferences()
+    @State private var showSettings = false
     @Binding var document: TypstDocument
     let fileURL: URL?
     @ObservedObject var workspace: ProjectWorkspace = ProjectWorkspace()
@@ -55,7 +57,19 @@ struct IPadEditorView: View {
                 .padding(.horizontal)
             }
         }
+        .preferredColorScheme(preferences.appearance.scheme)
+        .tint(Color(preferences.theme.colors[4]))
+        .sheet(isPresented: $showSettings) {
+            NavigationStack {
+                EditorSettingsView()
+                    .navigationTitle("Settings")
+                    .toolbar { Button("Done") { showSettings = false } }
+            }
+        }
         .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button { showSettings = true } label: { Label("Settings", systemImage: "gearshape") }
+            }
             ToolbarItemGroup(placement: .primaryAction) {
                 Button { compile(immediate: true) } label: { Label("Compile", systemImage: "play") }
                     .keyboardShortcut("b", modifiers: .command)

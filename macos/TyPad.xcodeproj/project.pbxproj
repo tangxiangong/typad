@@ -49,6 +49,8 @@
 		AABBCC012345678900000012 /* TyPad/Sources/TyPad/CompletionPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABBCC012345678900000011 /* TyPad/Sources/TyPad/CompletionPanel.swift */; };
 		AABBCC012345678900000022 /* TyPad/Sources/TyPad/WorkspaceSidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABBCC012345678900000021 /* TyPad/Sources/TyPad/WorkspaceSidebar.swift */; };
 		AABBCC012345678900000032 /* TyPad/Sources/TyPad/SourceRuler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABBCC012345678900000031 /* TyPad/Sources/TyPad/SourceRuler.swift */; };
+		AABBCC012345678900000072 /* TyPad/Sources/TyPad/EditorSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABBCC012345678900000071 /* TyPad/Sources/TyPad/EditorSettings.swift */; };
+		AABBCC012345678900000082 /* TyPad/Sources/TyPad/EditorSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABBCC012345678900000071 /* TyPad/Sources/TyPad/EditorSettings.swift */; };
 		AABBCC012345678900000042 /* TyPad/Resources/Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = AABBCC012345678900000041 /* TyPad/Resources/Localizable.xcstrings */; };
 		AABBCC012345678900000052 /* TyPad/Resources/Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AABBCC012345678900000051 /* TyPad/Resources/Assets.xcassets */; };
 		AABBCC012345678900000062 /* TyPad/Resources/AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = AABBCC012345678900000061 /* TyPad/Resources/AppIcon.icon */; };
@@ -139,6 +141,7 @@
 		AABBCC012345678900000011 /* TyPad/Sources/TyPad/CompletionPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TyPad/Sources/TyPad/CompletionPanel.swift; sourceTree = SOURCE_ROOT; };
 		AABBCC012345678900000021 /* TyPad/Sources/TyPad/WorkspaceSidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TyPad/Sources/TyPad/WorkspaceSidebar.swift; sourceTree = SOURCE_ROOT; };
 		AABBCC012345678900000031 /* TyPad/Sources/TyPad/SourceRuler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TyPad/Sources/TyPad/SourceRuler.swift; sourceTree = SOURCE_ROOT; };
+		AABBCC012345678900000071 /* TyPad/Sources/TyPad/EditorSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TyPad/Sources/TyPad/EditorSettings.swift; sourceTree = SOURCE_ROOT; };
 		AABBCC012345678900000041 /* TyPad/Resources/Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = TyPad/Resources/Localizable.xcstrings; sourceTree = SOURCE_ROOT; };
 		AABBCC012345678900000051 /* TyPad/Resources/Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = TyPad/Resources/Assets.xcassets; sourceTree = SOURCE_ROOT; };
 		AABBCC012345678900000061 /* TyPad/Resources/AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = TyPad/Resources/AppIcon.icon; sourceTree = SOURCE_ROOT; };
@@ -215,6 +218,7 @@
 				AABBCC012345678900000041 /* TyPad/Resources/Localizable.xcstrings */,
 				7223C4F4C17B403B62B0C3AE /* TyPad/Sources/TyPad/TyPadApp.swift */,
 				AABBCC012345678900000031 /* TyPad/Sources/TyPad/SourceRuler.swift */,
+				AABBCC012345678900000071 /* TyPad/Sources/TyPad/EditorSettings.swift */,
 				AABBCC012345678900000021 /* TyPad/Sources/TyPad/WorkspaceSidebar.swift */,
 				AABBCC012345678900000011 /* TyPad/Sources/TyPad/CompletionPanel.swift */,
 				AABBCC012345678900000001 /* TyPad/Sources/TyPad/WelcomeView.swift */,
@@ -512,6 +516,7 @@
 			files = (
 				ABCDEF012345678900000002 /* TyPad/Sources/TyPad/PreviewModel.swift in Sources */,
 				AABBCC012345678900000032 /* TyPad/Sources/TyPad/SourceRuler.swift in Sources */,
+				AABBCC012345678900000072 /* TyPad/Sources/TyPad/EditorSettings.swift in Sources */,
 				AABBCC012345678900000022 /* TyPad/Sources/TyPad/WorkspaceSidebar.swift in Sources */,
 				AABBCC012345678900000012 /* TyPad/Sources/TyPad/CompletionPanel.swift in Sources */,
 				AABBCC012345678900000002 /* TyPad/Sources/TyPad/WelcomeView.swift in Sources */,
@@ -546,6 +551,7 @@
 				DEAC3A3DAC39F6D278C6E858 /* LocalPreviewModel.swift in Sources */,
 				A8C8BDDD5593D471842BACC1 /* PDFPreview.swift in Sources */,
 				EBA9735DE7D09277ADFE6BAF /* SourceEditor.swift in Sources */,
+				AABBCC012345678900000082 /* EditorSettings.swift in Sources */,
 				62F86319994E9BBF5A5B3C9C /* TyPadApp.swift in Sources */,
 				2C6DA78D252ACB5E8ABBA47E /* TyPad/Sources/TyPad/TypstDocument.swift in Sources */,
 			);

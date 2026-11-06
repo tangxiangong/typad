@@ -1,681 +1,13 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-  "Arrows": {
-    "extractionState": "manual",
-    "localizations": {
-      "zh-Hans": {
-        "stringUnit": {
-          "state": "translated",
-          "value": "箭头"
-        }
-      }
-    }
-  },
-  "Calculus": {
-    "extractionState": "manual",
-    "localizations": {
-      "zh-Hans": {
-        "stringUnit": {
-          "state": "translated",
-          "value": "微积分"
-        }
-      }
-    }
-  },
-  "Delimiters": {
-    "extractionState": "manual",
-    "localizations": {
-      "zh-Hans": {
-        "stringUnit": {
-          "state": "translated",
-          "value": "括号与定界符"
-        }
-      }
-    }
-  },
-  "Functions & Categories": {
-    "extractionState": "manual",
-    "localizations": {
-      "zh-Hans": {
-        "stringUnit": {
-          "state": "translated",
-          "value": "函数与范畴"
-        }
-      }
-    }
-  },
-  "Geometry & Shapes": {
-    "extractionState": "manual",
-    "localizations": {
-      "zh-Hans": {
-        "stringUnit": {
-          "state": "translated",
-          "value": "几何与图形"
-        }
-      }
-    }
-  },
-  "Greek Letters": {
-    "extractionState": "manual",
-    "localizations": {
-      "zh-Hans": {
-        "stringUnit": {
-          "state": "translated",
-          "value": "希腊字母"
-        }
-      }
-    }
-  },
-  "Insert a math symbol": {
-    "extractionState": "manual",
-    "localizations": {
-      "zh-Hans": {
-        "stringUnit": {
-          "state": "translated",
-          "value": "插入数学符号"
-        }
-      }
-    }
-  },
-  "Insert symbol command at selection": {
-    "extractionState": "manual",
-    "localizations": {
-      "zh-Hans": {
-        "stringUnit": {
-          "state": "translated",
-          "value": "在选区插入 Typst 指令"
-        }
-      }
-    }
-  },
-  "Inserts the Typst command at your selection": {
-    "extractionState": "manual",
-    "localizations": {
-      "zh-Hans": {
-        "stringUnit": {
-          "state": "translated",
-          "value": "在选区插入 Typst 指令"
-        }
-      }
-    }
-  },
-  "Letterlike Symbols": {
-    "extractionState": "manual",
-    "localizations": {
-      "zh-Hans": {
-        "stringUnit": {
-          "state": "translated",
-          "value": "字母类符号"
-        }
-      }
-    }
-  },
-  "Math Symbols": {
-    "extractionState": "manual",
-    "localizations": {
-      "zh-Hans": {
-        "stringUnit": {
-          "state": "translated",
-          "value": "数学符号"
-        }
-      }
-    }
-  },
-  "No matching symbols": {
-    "extractionState": "manual",
-    "localizations": {
-      "zh-Hans": {
-        "stringUnit": {
-          "state": "translated",
-          "value": "没有匹配的符号"
-        }
-      }
-    }
-  },
-  "Operators": {
-    "extractionState": "manual",
-    "localizations": {
-      "zh-Hans": {
-        "stringUnit": {
-          "state": "translated",
-          "value": "运算符"
-        }
-      }
-    }
-  },
-  "Other Mathematics": {
-    "extractionState": "manual",
-    "localizations": {
-      "zh-Hans": {
-        "stringUnit": {
-          "state": "translated",
-          "value": "其他数学符号"
-        }
-      }
-    }
-  },
-  "Punctuation & Accents": {
-    "extractionState": "manual",
-    "localizations": {
-      "zh-Hans": {
-        "stringUnit": {
-          "state": "translated",
-          "value": "标点与重音"
-        }
-      }
-    }
-  },
-  "Relations": {
-    "extractionState": "manual",
-    "localizations": {
-      "zh-Hans": {
-        "stringUnit": {
-          "state": "translated",
-          "value": "关系符号"
-        }
-      }
-    }
-  },
-  "Search symbols": {
-    "extractionState": "manual",
-    "localizations": {
-      "zh-Hans": {
-        "stringUnit": {
-          "state": "translated",
-          "value": "搜索符号"
-        }
-      }
-    }
-  },
-  "Sets & Logic": {
-    "extractionState": "manual",
-    "localizations": {
-      "zh-Hans": {
-        "stringUnit": {
-          "state": "translated",
-          "value": "集合与逻辑"
-        }
-      }
-    }
-  },
-    "Go to Page" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "跳转到页码"
-          }
-        }
-      }
-    },
-    "Zoom and page layout" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "缩放与页面布局"
-          }
-        }
-      }
-    },
-    "Close standalone document windows for this item before moving or deleting it. Project tabs can remain open." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "移动或删除此项前，请先关闭它的独立文档窗口。项目标签页可以保持打开。"
-          }
-        }
-      }
-    },
-    "File unavailable on disk — buffer retained" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "无法读取磁盘文件，已保留缓冲区"
-          }
-        }
-      }
-    },
-    "Restore Missing File" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "恢复缺失文件"
-          }
-        }
-      }
-    },
-    "Rename or Move…" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "重命名或移动…"
-          }
-        }
-      }
-    },
-    "Move" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "移动"
-          }
-        }
-      }
-    },
-    "Move to Trash" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "移到废纸篓"
-          }
-        }
-      }
-    },
-    "Save and Move to Trash" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "保存并移到废纸篓"
-          }
-        }
-      }
-    },
-    "Literal file references will be updated as unsaved edits. Review and save the project; computed paths may need manual changes." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "将把直接调用中的字面量文件引用更新为未保存的编辑。请检查并保存项目；计算路径、别名和代码块中的路径需要手动检查。"
-          }
-        }
-      }
-    },
-    "This item has unsaved edits. Save the project before moving it to Trash. References are not removed." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "此项包含未保存的编辑。移到废纸篓前将保存项目；引用不会被删除。"
-          }
-        }
-      }
-    },
-    "You can restore this item from Trash. References are not removed." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "你可以从废纸篓恢复此项；引用不会被删除。"
-          }
-        }
-      }
-    },
-    "Resolve external changes" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "解决外部修改冲突"
-          }
-        }
-      }
-    },
-    "On Disk" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "磁盘版本"
-          }
-        }
-      }
-    },
-    "Merged Result" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "合并结果"
-          }
-        }
-      }
-    },
-    "The result starts with your local edits. Compare with the disk version and edit the result, then apply and save." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "合并结果初始为本地编辑。请与磁盘版本对比并编辑，然后应用并保存。"
-          }
-        }
-      }
-    },
-    "Use Disk Version" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "使用磁盘版本"
-          }
-        }
-      }
-    },
-    "Use Local Version" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "使用本地版本"
-          }
-        }
-      }
-    },
-    "Apply Merge" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "应用合并"
-          }
-        }
-      }
-    },
-    "Another window has different edits for this file. Your local edits have been kept." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "另一个窗口对此文件有不同的编辑。已保留本地编辑。"
-          }
-        }
-      }
-    },
-    "Back" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "后退"
-          }
-        }
-      }
-    },
-    "Forward" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "前进"
-          }
-        }
-      }
-    },
-    "Split Editor" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "分栏编辑"
-          }
-        }
-      }
-    },
-    "Close Split Editor" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "关闭分栏编辑"
-          }
-        }
-      }
-    },
-    "New Project from Template" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "从模板新建项目"
-          }
-        }
-      }
-    },
-    "Blank Document" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "空白文档"
-          }
-        }
-      }
-    },
-    "Report" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "报告"
-          }
-        }
-      }
-    },
-    "Letter" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "信函"
-          }
-        }
-      }
-    },
-    "Pinned Project" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "已固定项目"
-          }
-        }
-      }
-    },
-    "Pin Project" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "固定项目"
-          }
-        }
-      }
-    },
-    "Unpin Project" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "取消固定项目"
-          }
-        }
-      }
-    },
-    "Export PDF…" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "导出 PDF…"
-          }
-        }
-      }
-    },
-    "Export current PDF" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "导出当前 PDF"
-          }
-        }
-      }
-    },
-    "The source changed. Compile again before exporting." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "源码已更改，请重新编译后再导出。"
-          }
-        }
-      }
-    },
-    "Page Layout" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "页面布局"
-          }
-        }
-      }
-    },
-    "Continuous" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "连续滚动"
-          }
-        }
-      }
-    },
-    "Single Page" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "单页"
-          }
-        }
-      }
-    },
-    "Two Pages" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "双页"
-          }
-        }
-      }
-    },
-    "Fit Width" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "适合宽度"
-          }
-        }
-      }
-    },
-    "Page" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "页码"
-          }
-        }
-      }
-    },
-    "Enter a page number" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "输入页码并按回车跳转"
-          }
-        }
-      }
-    },
-    "Compilation cancelled" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "已取消编译"
-          }
-        }
-      }
-    },
-    "Cancel Compilation" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "取消编译"
-          }
-        }
-      }
-    },
     "%@ lines" : {
 
     },
     "%@ pages" : {
+
+    },
+    "%@ pt" : {
 
     },
     "%@:%@" : {
@@ -684,6 +16,16 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "%1$@:%2$@"
+          }
+        }
+      }
+    },
+    "%@:%@:%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@:%2$@:%3$@"
           }
         }
       }
@@ -821,6 +163,9 @@
         }
       }
     },
+    "= TyPad\nHello, 世界!\n#let size = 14pt" : {
+
+    },
     "Actual Size" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -872,6 +217,50 @@
         }
       }
     },
+    "Another window has different edits for this file. Your local edits have been kept." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "另一个窗口对此文件有不同的编辑。已保留本地编辑。"
+          }
+        }
+      }
+    },
+    "Appearance" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "外观"
+          }
+        }
+      }
+    },
+    "Apply Merge" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "应用合并"
+          }
+        }
+      }
+    },
+    "Arrows" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "箭头"
+          }
+        }
+      }
+    },
     "Auto compile paused" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -889,6 +278,39 @@
         }
       }
     },
+    "Back" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "后退"
+          }
+        }
+      }
+    },
+    "Blank Document" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "空白文档"
+          }
+        }
+      }
+    },
+    "Calculus" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "微积分"
+          }
+        }
+      }
+    },
     "Cancel" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -896,6 +318,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "取消"
+          }
+        }
+      }
+    },
+    "Cancel Compilation" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "取消编译"
           }
         }
       }
@@ -1011,6 +444,28 @@
         }
       }
     },
+    "Close Split Editor" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "关闭分栏编辑"
+          }
+        }
+      }
+    },
+    "Close standalone document windows for this item before moving or deleting it. Project tabs can remain open." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "移动或删除此项前，请先关闭它的独立文档窗口。项目标签页可以保持打开。"
+          }
+        }
+      }
+    },
     "Close tab" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1018,6 +473,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "关闭标签页"
+          }
+        }
+      }
+    },
+    "Compilation cancelled" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已取消编译"
           }
         }
       }
@@ -1158,6 +624,17 @@
         }
       }
     },
+    "Continuous" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "连续滚动"
+          }
+        }
+      }
+    },
     "Couldn’t open document" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1204,6 +681,39 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "创建项目"
+          }
+        }
+      }
+    },
+    "Dark" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "深色"
+          }
+        }
+      }
+    },
+    "Dark Theme" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "深色主题"
+          }
+        }
+      }
+    },
+    "Delimiters" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "括号与定界符"
           }
         }
       }
@@ -1352,6 +862,17 @@
         }
       }
     },
+    "Edit" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "编辑"
+          }
+        }
+      }
+    },
     "Edit files in a folder workspace" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1431,6 +952,17 @@
         }
       }
     },
+    "Enter a page number" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "输入页码并按回车跳转"
+          }
+        }
+      }
+    },
     "Esc Close" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1448,6 +980,28 @@
         }
       }
     },
+    "Export current PDF" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "导出当前 PDF"
+          }
+        }
+      }
+    },
+    "Export PDF…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "导出 PDF…"
+          }
+        }
+      }
+    },
     "File operation failed" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1461,6 +1015,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "文件操作失败"
+          }
+        }
+      }
+    },
+    "File unavailable on disk — buffer retained" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无法读取磁盘文件，已保留缓冲区"
           }
         }
       }
@@ -1516,6 +1081,94 @@
         }
       }
     },
+    "Fit Width" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "适合宽度"
+          }
+        }
+      }
+    },
+    "Font" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "字体"
+          }
+        }
+      }
+    },
+    "Font Size" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "字号"
+          }
+        }
+      }
+    },
+    "Forward" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "前进"
+          }
+        }
+      }
+    },
+    "Functions & Categories" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "函数与范畴"
+          }
+        }
+      }
+    },
+    "Geometry & Shapes" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "几何与图形"
+          }
+        }
+      }
+    },
+    "Go to Page" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "跳转到页码"
+          }
+        }
+      }
+    },
+    "Greek Letters" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "希腊字母"
+          }
+        }
+      }
+    },
     "Headings" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1529,6 +1182,83 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "目录"
+          }
+        }
+      }
+    },
+    "Insert a math symbol" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "插入数学符号"
+          }
+        }
+      }
+    },
+    "Insert symbol command at selection" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在选区插入 Typst 指令"
+          }
+        }
+      }
+    },
+    "Inserts the Typst command at your selection" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在选区插入 Typst 指令"
+          }
+        }
+      }
+    },
+    "Letter" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "信函"
+          }
+        }
+      }
+    },
+    "Letterlike Symbols" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "字母类符号"
+          }
+        }
+      }
+    },
+    "Light" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "浅色"
+          }
+        }
+      }
+    },
+    "Light Theme" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "浅色主题"
           }
         }
       }
@@ -1549,6 +1279,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "第 %llu 行"
+          }
+        }
+      }
+    },
+    "Literal file references will be updated as unsaved edits. Review and save the project; computed paths may need manual changes." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "将把直接调用中的字面量文件引用更新为未保存的编辑。请检查并保存项目；计算路径、别名和代码块中的路径需要手动检查。"
           }
         }
       }
@@ -1632,6 +1373,50 @@
         }
       }
     },
+    "Math Symbols" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "数学符号"
+          }
+        }
+      }
+    },
+    "Merged Result" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "合并结果"
+          }
+        }
+      }
+    },
+    "Move" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "移动"
+          }
+        }
+      }
+    },
+    "Move to Trash" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "移到废纸篓"
+          }
+        }
+      }
+    },
     "Name" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -1684,6 +1469,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "新建文件…"
+          }
+        }
+      }
+    },
+    "New Project from Template" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "从模板新建项目"
           }
         }
       }
@@ -1801,6 +1597,17 @@
         }
       }
     },
+    "No matching symbols" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有匹配的符号"
+          }
+        }
+      }
+    },
     "No recent documents" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1831,6 +1638,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "好"
+          }
+        }
+      }
+    },
+    "On Disk" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "磁盘版本"
           }
         }
       }
@@ -1885,6 +1703,50 @@
         }
       }
     },
+    "Operators" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "运算符"
+          }
+        }
+      }
+    },
+    "Other Mathematics" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "其他数学符号"
+          }
+        }
+      }
+    },
+    "Page" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "页码"
+          }
+        }
+      }
+    },
+    "Page Layout" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "页面布局"
+          }
+        }
+      }
+    },
     "PDF" : {
 
     },
@@ -1901,6 +1763,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "PDF 预览"
+          }
+        }
+      }
+    },
+    "Pin Project" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "固定项目"
+          }
+        }
+      }
+    },
+    "Pinned Project" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已固定项目"
           }
         }
       }
@@ -2017,6 +1901,17 @@
         }
       }
     },
+    "Punctuation & Accents" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "标点与重音"
+          }
+        }
+      }
+    },
     "Quick help" : {
       "extractionState" : "manual",
       "generatesSymbol" : false,
@@ -2097,6 +1992,28 @@
         }
       }
     },
+    "Recent Projects" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最近项目"
+          }
+        }
+      }
+    },
+    "Recovered edits" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已恢复编辑"
+          }
+        }
+      }
+    },
     "Recovered unsaved project edits. Review them before saving." : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2108,6 +2025,17 @@
         }
       }
     },
+    "Redo" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "重做"
+          }
+        }
+      }
+    },
     "Refresh files" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2115,6 +2043,39 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "刷新文件"
+          }
+        }
+      }
+    },
+    "Relations" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "关系符号"
+          }
+        }
+      }
+    },
+    "Rename or Move…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "重命名或移动…"
+          }
+        }
+      }
+    },
+    "Report" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "报告"
           }
         }
       }
@@ -2132,6 +2093,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "查询光标处的补全或文档。"
+          }
+        }
+      }
+    },
+    "Resolve external changes" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "解决外部修改冲突"
+          }
+        }
+      }
+    },
+    "Restore Missing File" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "恢复缺失文件"
           }
         }
       }
@@ -2158,6 +2141,17 @@
         }
       }
     },
+    "Save and Move to Trash" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保存并移到废纸篓"
+          }
+        }
+      }
+    },
     "Save changes before closing?" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -2180,6 +2174,17 @@
         }
       }
     },
+    "Search symbols" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "搜索符号"
+          }
+        }
+      }
+    },
     "Set as Main Document" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2187,6 +2192,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "设为主文档"
+          }
+        }
+      }
+    },
+    "Sets & Logic" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "集合与逻辑"
+          }
+        }
+      }
+    },
+    "Settings" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "设置"
           }
         }
       }
@@ -2270,6 +2297,39 @@
         }
       }
     },
+    "Single Page" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "单页"
+          }
+        }
+      }
+    },
+    "Source Editor" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "源码编辑器"
+          }
+        }
+      }
+    },
+    "Split Editor" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "分栏编辑"
+          }
+        }
+      }
+    },
     "Start with a blank Typst document" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2283,6 +2343,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "创建空白 Typst 文档"
+          }
+        }
+      }
+    },
+    "System" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "跟随系统"
+          }
+        }
+      }
+    },
+    "System Monospaced" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "系统等宽字体"
           }
         }
       }
@@ -2339,6 +2421,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "文档存在编译错误"
+          }
+        }
+      }
+    },
+    "The result starts with your local edits. Compare with the disk version and edit the result, then apply and save." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "合并结果初始为本地编辑。请与磁盘版本对比并编辑，然后应用并保存。"
+          }
+        }
+      }
+    },
+    "The source changed. Compile again before exporting." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "源码已更改，请重新编译后再导出。"
           }
         }
       }
@@ -2411,6 +2515,39 @@
         }
       }
     },
+    "Theme" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "主题"
+          }
+        }
+      }
+    },
+    "These settings affect source editing, not the exported document." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "这些设置仅影响源码编辑，不影响导出的文档。"
+          }
+        }
+      }
+    },
+    "This item has unsaved edits. Save the project before moving it to Trash. References are not removed." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "此项包含未保存的编辑。移到废纸篓前将保存项目；引用不会被删除。"
+          }
+        }
+      }
+    },
     "Tinymist documentation" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2458,6 +2595,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "请尝试其他名称或文件夹。"
+          }
+        }
+      }
+    },
+    "Two Pages" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "双页"
           }
         }
       }
@@ -2519,6 +2667,28 @@
         }
       }
     },
+    "Undo" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "撤销"
+          }
+        }
+      }
+    },
+    "Unpin Project" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "取消固定项目"
+          }
+        }
+      }
+    },
     "Unsaved changes" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2543,6 +2713,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "未命名.typ"
+          }
+        }
+      }
+    },
+    "Use Disk Version" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "使用磁盘版本"
+          }
+        }
+      }
+    },
+    "Use Local Version" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "使用本地版本"
           }
         }
       }
@@ -2649,6 +2841,17 @@
         }
       }
     },
+    "You can restore this item from Trash. References are not removed." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "你可以从废纸篓恢复此项；引用不会被删除。"
+          }
+        }
+      }
+    },
     "Zoom" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2666,57 +2869,13 @@
         }
       }
     },
-    "Recent Projects" : {
+    "Zoom and page layout" : {
       "extractionState" : "manual",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "最近项目"
-          }
-        }
-      }
-    },
-    "Recovered edits" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "已恢复编辑"
-          }
-        }
-      }
-    },
-    "Edit" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "编辑"
-          }
-        }
-      }
-    },
-    "Undo" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "撤销"
-          }
-        }
-      }
-    },
-    "Redo" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "重做"
+            "value" : "缩放与页面布局"
           }
         }
       }
