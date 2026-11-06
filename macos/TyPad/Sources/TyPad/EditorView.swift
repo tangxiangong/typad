@@ -38,6 +38,8 @@ struct EditorView: View {
     @State private var secondaryURL: URL?
     @State private var replacement: SourceReplacement?
     @State private var showAssistance = false
+    @State private var showSymbols = false
+    @State private var symbolInsertion: SymbolInsertion?
     @State private var restoredState = false
     private var filename: String { fileURL?.lastPathComponent ?? String(localized: "Untitled.typ") }
 
@@ -167,7 +169,7 @@ struct EditorView: View {
             document.source = change.after
         }
         .onChange(of: fileURL) {
-            joinOpenSources(); dismissAssistance(); replacement = nil; cursor = 0
+            joinOpenSources(); dismissAssistance(); replacement = nil; symbolInsertion = nil; showSymbols = false; cursor = 0
             if selectionFile != fileURL { selection = nil }
             compile()
         }
@@ -220,11 +222,24 @@ struct EditorView: View {
                 FileIcon(url: fileURL ?? URL(fileURLWithPath: "Untitled.typ"))
                 Text(verbatim: filename).lineLimit(1).truncationMode(.middle)
                 Spacer()
-                Menu {
-                    Button("Complete") { query("complete", offset: cursor) }.keyboardShortcut(" ", modifiers: .control)
-                    Button("Quick Help") { query("hover", offset: cursor) }.keyboardShortcut("i", modifiers: [.option, .command])
-                } label: { Image(systemName: "ellipsis.circle") }
-                .menuStyle(.borderlessButton).fixedSize().help("Editing assistance")
+                Button { showSymbols.toggle() } label: {
+                    Label("Math Symbols", systemImage: "x.squareroot")
+                }
+                .labelStyle(.iconOnly)
+                .buttonStyle(.borderless).help("Insert a math symbol")
+                .disabled(workspace.root != nil && workspace.activeURL == nil)
+                .popover(isPresented: $showSymbols, arrowEdge: .bottom) {
+                    MathSymbolPicker(insert: { symbol in
+                        symbolInsertion = SymbolInsertion(text: symbol.command)
+                        showSymbols = false
+                    }, complete: {
+                        showSymbols = false
+                        query("complete", offset: cursor)
+                    }, help: {
+                        showSymbols = false
+                        query("hover", offset: cursor)
+                    })
+                }
             }
             .font(.system(size: 12)).padding(.horizontal, 12).frame(height: 28)
             .background(.bar).zIndex(1)
@@ -255,7 +270,7 @@ struct EditorView: View {
         return SourceEditor(text: $document.source, selection: activeSelection, cursor: $cursor,
                             replacement: activeReplacement, language: language, assistanceVisible: $showAssistance,
                             requestCompletion: { query("complete", offset: $0) }, acceptCompletion: acceptCompletion,
-                            session: session).id(workspace.root == nil ? nil : fileURL).clipped()
+                            session: session, symbolInsertion: $symbolInsertion).id(workspace.root == nil ? nil : fileURL).clipped()
     }
     private func acceptCompletion(_ item: WorkerCompletion) {
         replacementFile = fileURL

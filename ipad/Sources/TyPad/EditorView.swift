@@ -16,6 +16,8 @@ struct IPadEditorView: View {
     @State private var chooseFolder = false
     @State private var resourceFolder: URL?
     @State private var fileError: String?
+    @State private var showSymbols = false
+    @State private var symbolTarget: SymbolInsertionTarget?
 
     var body: some View {
         GeometryReader { geometry in
@@ -57,6 +59,29 @@ struct IPadEditorView: View {
             ToolbarItemGroup(placement: .primaryAction) {
                 Button { compile(immediate: true) } label: { Label("Compile", systemImage: "play") }
                     .keyboardShortcut("b", modifiers: .command)
+                Button {
+                    let session = sessions.session(for: workspace.root == nil ? nil : fileURL)
+                    if let view = session.view {
+                        if view.markedTextRange != nil {
+                            view.unmarkText()
+                            view.delegate?.textViewDidChange?(view)
+                        }
+                        symbolTarget = SymbolInsertionTarget(source: view.text, selection: view.selectedRange)
+                    } else {
+                        symbolTarget = SymbolInsertionTarget(source: document.source,
+                                                             selection: session.selection ?? NSRange(location: 0, length: 0))
+                    }
+                    showPreview = false
+                    showSymbols = true
+                } label: { Label("Math Symbols", systemImage: "x.squareroot") }
+                .labelStyle(.iconOnly)
+                .disabled(workspace.root != nil && fileURL == nil)
+                .popover(isPresented: $showSymbols) {
+                    MathSymbolPicker(insert: insertSymbol)
+                        .onDisappear {
+                            sessions.session(for: workspace.root == nil ? nil : fileURL).view?.becomeFirstResponder()
+                        }
+                }
                 Menu {
                     let session = sessions.session(for: workspace.root == nil ? nil : fileURL)
                     let history = session.view?.undoManager
@@ -93,7 +118,10 @@ struct IPadEditorView: View {
         .onChange(of: document.source) { if workspace.root == nil { compile() } }
         .onChange(of: workspace.revision) { compile() }
         .onChange(of: workspace.buffers.map(\.url)) { sessions.retain(workspace.buffers.map(\.url)) }
-        .onChange(of: fileURL) { if workspace.root == nil { resourceFolder = nil; compile() } }
+        .onChange(of: fileURL) {
+            showSymbols = false; symbolTarget = nil
+            if workspace.root == nil { resourceFolder = nil; compile() }
+        }
         .onChange(of: automatic) { compile() }
         .onDisappear { preview.stop() }
         .sheet(isPresented: $showIssues) {
@@ -125,6 +153,24 @@ struct IPadEditorView: View {
         .alert("File operation failed", isPresented: Binding(get: { fileError != nil }, set: { if !$0 { fileError = nil } })) {
             Button("OK") { fileError = nil }
         } message: { Text(fileError ?? "") }
+    }
+
+    private func insertSymbol(_ symbol: MathSymbol) {
+        let session = sessions.session(for: workspace.root == nil ? nil : fileURL)
+        guard let view = session.view, view.markedTextRange == nil else { return }
+        guard let selection = symbolTarget?.range(in: view.text),
+              view.text.utf16.elementsEqual(document.source.utf16) else {
+            showSymbols = false
+            return
+        }
+        view.selectedRange = selection
+        view.insertText(symbol.command)
+        // Also synchronize programmatic edits when UIKit does not send a delegate callback.
+        view.delegate?.textViewDidChange?(view)
+        session.selection = view.selectedRange
+        session.offset = view.contentOffset
+        sessions.objectWillChange.send()
+        showSymbols = false
     }
 
     private var sourceEditor: some View {

@@ -1,6 +1,204 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+  "Arrows": {
+    "extractionState": "manual",
+    "localizations": {
+      "zh-Hans": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "箭头"
+        }
+      }
+    }
+  },
+  "Calculus": {
+    "extractionState": "manual",
+    "localizations": {
+      "zh-Hans": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "微积分"
+        }
+      }
+    }
+  },
+  "Delimiters": {
+    "extractionState": "manual",
+    "localizations": {
+      "zh-Hans": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "括号与定界符"
+        }
+      }
+    }
+  },
+  "Functions & Categories": {
+    "extractionState": "manual",
+    "localizations": {
+      "zh-Hans": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "函数与范畴"
+        }
+      }
+    }
+  },
+  "Geometry & Shapes": {
+    "extractionState": "manual",
+    "localizations": {
+      "zh-Hans": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "几何与图形"
+        }
+      }
+    }
+  },
+  "Greek Letters": {
+    "extractionState": "manual",
+    "localizations": {
+      "zh-Hans": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "希腊字母"
+        }
+      }
+    }
+  },
+  "Insert a math symbol": {
+    "extractionState": "manual",
+    "localizations": {
+      "zh-Hans": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "插入数学符号"
+        }
+      }
+    }
+  },
+  "Insert symbol command at selection": {
+    "extractionState": "manual",
+    "localizations": {
+      "zh-Hans": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "在选区插入 Typst 指令"
+        }
+      }
+    }
+  },
+  "Inserts the Typst command at your selection": {
+    "extractionState": "manual",
+    "localizations": {
+      "zh-Hans": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "在选区插入 Typst 指令"
+        }
+      }
+    }
+  },
+  "Letterlike Symbols": {
+    "extractionState": "manual",
+    "localizations": {
+      "zh-Hans": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "字母类符号"
+        }
+      }
+    }
+  },
+  "Math Symbols": {
+    "extractionState": "manual",
+    "localizations": {
+      "zh-Hans": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "数学符号"
+        }
+      }
+    }
+  },
+  "No matching symbols": {
+    "extractionState": "manual",
+    "localizations": {
+      "zh-Hans": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "没有匹配的符号"
+        }
+      }
+    }
+  },
+  "Operators": {
+    "extractionState": "manual",
+    "localizations": {
+      "zh-Hans": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "运算符"
+        }
+      }
+    }
+  },
+  "Other Mathematics": {
+    "extractionState": "manual",
+    "localizations": {
+      "zh-Hans": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "其他数学符号"
+        }
+      }
+    }
+  },
+  "Punctuation & Accents": {
+    "extractionState": "manual",
+    "localizations": {
+      "zh-Hans": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "标点与重音"
+        }
+      }
+    }
+  },
+  "Relations": {
+    "extractionState": "manual",
+    "localizations": {
+      "zh-Hans": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "关系符号"
+        }
+      }
+    }
+  },
+  "Search symbols": {
+    "extractionState": "manual",
+    "localizations": {
+      "zh-Hans": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "搜索符号"
+        }
+      }
+    }
+  },
+  "Sets & Logic": {
+    "extractionState": "manual",
+    "localizations": {
+      "zh-Hans": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "集合与逻辑"
+        }
+      }
+    }
+  },
     "Go to Page" : {
       "extractionState" : "manual",
       "localizations" : {

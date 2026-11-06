@@ -82,6 +82,8 @@ struct SourceEditor: NSViewRepresentable {
     let acceptCompletion: (WorkerCompletion) -> Void
     var session: SourceEditorSession? = nil
 
+    var symbolInsertion: Binding<SymbolInsertion?> = .constant(nil)
+
     func makeCoordinator() -> Coordinator { Coordinator(self) }
 
     func makeNSView(context: Context) -> NSScrollView {
@@ -145,6 +147,17 @@ struct SourceEditor: NSViewRepresentable {
             context.coordinator.highlight(editor)
             (scroll.verticalRulerView as? SourceRuler)?.updateLines()
             editor.setSelectedRange(NSRange(location: min(oldSelection.location, (text as NSString).length), length: 0))
+        }
+        if let insertion = symbolInsertion.wrappedValue, context.coordinator.symbolInsertionID != insertion.id,
+           !editor.hasMarkedText() {
+            context.coordinator.symbolInsertionID = insertion.id
+            DispatchQueue.main.async { [weak editor] in
+                guard symbolInsertion.wrappedValue?.id == insertion.id else { return }
+                symbolInsertion.wrappedValue = nil
+                guard let editor, !editor.hasMarkedText() else { return }
+                editor.insertText(insertion.text, replacementRange: editor.selectedRange())
+                editor.window?.makeFirstResponder(editor)
+            }
         }
         if let replacement, context.coordinator.replacementID != replacement.id, !editor.hasMarkedText() {
             context.coordinator.replacementID = replacement.id
@@ -211,6 +224,7 @@ struct SourceEditor: NSViewRepresentable {
         var parent: SourceEditor
         var selectionID: UUID?
         var pendingSelection: SourceSelection?
+        var symbolInsertionID: UUID?
         var replacementID: UUID?
         let popover = CompletionWindow()
         weak var editor: NSTextView?
