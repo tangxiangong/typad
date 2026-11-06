@@ -14,20 +14,41 @@ final class SourceEditorSession {
     var selectedRanges: [NSValue]?
     var scrollOrigin: NSPoint?
     var selectionID: UUID?
+    private let stateKey: String?
+    init(url: URL? = nil) {
+        stateKey = url.map { "sourcePosition:" + $0.path }
+        if let stateKey, let state = UserDefaults.standard.dictionary(forKey: stateKey),
+           let offset = state["offset"] as? Int, offset >= 0 {
+            selectedRanges = [NSValue(range: NSRange(location: offset, length: max(0, state["length"] as? Int ?? 0)))]
+            scrollOrigin = NSPoint(x: state["x"] as? Double ?? 0, y: state["y"] as? Double ?? 0)
+        }
+    }
 
     func capture(_ scroll: NSScrollView) {
         guard let editor = scroll.documentView as? NSTextView else { return }
         selectedRanges = editor.selectedRanges
         scrollOrigin = scroll.contentView.bounds.origin
+        if let stateKey {
+            UserDefaults.standard.set(["offset": editor.selectedRange().location, "length": editor.selectedRange().length,
+                                       "x": Double(scroll.contentView.bounds.origin.x),
+                                       "y": Double(scroll.contentView.bounds.origin.y)], forKey: stateKey)
+        }
     }
 
     func restore(_ scroll: NSScrollView) {
         guard let editor = scroll.documentView as? NSTextView else { return }
         scroll.layoutSubtreeIfNeeded()
         if let container = editor.textContainer { editor.layoutManager?.ensureLayout(for: container) }
-        if let selectedRanges { editor.selectedRanges = selectedRanges }
-        if let scrollOrigin {
-            scroll.contentView.scroll(to: scrollOrigin)
+        let savedOrigin = scrollOrigin
+        if let selectedRanges {
+            let length = (editor.string as NSString).length
+            editor.selectedRanges = selectedRanges.map {
+                let start = min($0.rangeValue.location, length)
+                return NSValue(range: NSRange(location: start, length: min($0.rangeValue.length, length - start)))
+            }
+        }
+        if let savedOrigin {
+            scroll.contentView.scroll(to: savedOrigin)
             scroll.reflectScrolledClipView(scroll.contentView)
         }
     }
@@ -38,9 +59,12 @@ final class SourceEditorSessions: ObservableObject {
     private var values: [URL: SourceEditorSession] = [:]
     func session(for url: URL) -> SourceEditorSession {
         if let value = values[url] { return value }
-        let value = SourceEditorSession()
+        let value = SourceEditorSession(url: url)
         values[url] = value
         return value
+    }
+    func captureAll() {
+        for session in values.values { if let scroll = session.scrollView { session.capture(scroll) } }
     }
     func remove(_ url: URL) { values.removeValue(forKey: url) }
 }
@@ -66,6 +90,7 @@ struct SourceEditor: NSViewRepresentable {
             editor.delegate = context.coordinator
             let offset = editor.selectedRange().location
             DispatchQueue.main.async { context.coordinator.parent.cursor = offset }
+            context.coordinator.observeScroll(scroll)
             return scroll
         }
         let scroll = SourceTextView.scrollableTextView()
@@ -106,6 +131,7 @@ struct SourceEditor: NSViewRepresentable {
         scroll.verticalRulerView = SourceRuler(scrollView: scroll, editor: editor)
         scroll.hasVerticalRuler = true
         scroll.rulersVisible = true
+        context.coordinator.observeScroll(scroll)
         return scroll
     }
 
@@ -114,6 +140,7 @@ struct SourceEditor: NSViewRepresentable {
         guard let editor = scroll.documentView as? NSTextView else { return }
         if editor.string != text, !editor.hasMarkedText() {
             let oldSelection = editor.selectedRange()
+            editor.undoManager?.removeAllActions()
             editor.string = text
             context.coordinator.highlight(editor)
             (scroll.verticalRulerView as? SourceRuler)?.updateLines()
@@ -192,6 +219,7 @@ struct SourceEditor: NSViewRepresentable {
         var didFocus = false
         var completionTask: Task<Void, Never>?
         private var eventMonitor: Any?
+        private var scrollObserver: NSObjectProtocol?
         init(_ parent: SourceEditor) {
             self.parent = parent
             super.init()
@@ -204,8 +232,21 @@ struct SourceEditor: NSViewRepresentable {
             NotificationCenter.default.addObserver(self, selector: #selector(deactivate), name: NSApplication.didResignActiveNotification, object: nil)
         }
         deinit {
+            if let scrollObserver { NotificationCenter.default.removeObserver(scrollObserver) }
             if let eventMonitor { NSEvent.removeMonitor(eventMonitor) }
             NotificationCenter.default.removeObserver(self)
+        }
+        func observeScroll(_ scroll: NSScrollView) {
+            if let scrollObserver { NotificationCenter.default.removeObserver(scrollObserver) }
+            scroll.contentView.postsBoundsChangedNotifications = true
+            scrollObserver = NotificationCenter.default.addObserver(forName: NSView.boundsDidChangeNotification,
+                object: scroll.contentView, queue: .main) { [weak self, weak scroll] _ in
+                MainActor.assumeIsolated {
+                    guard let self, self.didFocus, let scroll,
+                          (scroll.documentView as? NSTextView)?.delegate === self else { return }
+                    self.parent.session?.capture(scroll)
+                }
+            }
         }
         @objc private func deactivate() {
             popover.close()
@@ -276,6 +317,7 @@ struct SourceEditor: NSViewRepresentable {
         func textViewDidChangeSelection(_ notification: Notification) {
             guard let editor = notification.object as? NSTextView else { return }
             editor.needsDisplay = true
+            if didFocus, let scroll = editor.enclosingScrollView { parent.session?.capture(scroll) }
             let offset = editor.selectedRange().location
             DispatchQueue.main.async { [weak self] in self?.parent.cursor = offset }
         }

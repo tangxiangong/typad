@@ -28,7 +28,7 @@ pub struct CompileDiagnostic {
     pub line: Option<u64>,
     /// One-based Unicode scalar column.
     pub column: Option<u64>,
-    /// UTF-16 offset in the main source; absent for other files.
+    /// UTF-16 offset in the source identified by `file`, when available.
     pub utf16_offset: Option<u64>,
 }
 
@@ -330,7 +330,6 @@ fn diagnostic(world: &dyn World, diagnostic: SourceDiagnostic) -> CompileDiagnos
         .and_then(|(source, offset)| source.lines().byte_to_line_column(offset));
     let utf16_offset = source
         .as_ref()
-        .filter(|source| source.id() == world.main())
         .zip(offset)
         .and_then(|(source, offset)| source.lines().byte_to_utf16(offset));
     let mut message = diagnostic.message.to_string();

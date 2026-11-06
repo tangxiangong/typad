@@ -38,7 +38,7 @@
 	<key>NSHighResolutionCapable</key>
 	<true/>
 	<key>NSPrincipalClass</key>
-	<string>NSApplication</string>
+	<string>TyPadApplication</string>
 	<key>UTImportedTypeDeclarations</key>
 	<array>
 		<dict>

@@ -73,8 +73,49 @@ private struct ProjectFileRow: View {
                     do { try workspace.setMain(file.url) } catch { workspace.error = error.localizedDescription }
                 }
             }
+            Button("Rename or Move…") { moveItem() }
+            Button("Move to Trash", role: .destructive) { trashItem() }
             Button("Show in Finder") { NSWorkspace.shared.activateFileViewerSelecting([file.url]) }
         }
+    }
+
+    private var canManageItem: Bool {
+        let open = NSDocumentController.shared.documents.contains { document in
+            guard !(document is ProjectDocument), let url = document.fileURL?.standardizedFileURL.resolvingSymlinksInPath() else { return false }
+            return url == file.url || url.path.hasPrefix(file.url.path + "/")
+        }
+        if open { workspace.error = String(localized: "Close standalone document windows for this item before moving or deleting it. Project tabs can remain open.") }
+        return !open
+    }
+
+    private func moveItem() {
+        guard canManageItem else { return }
+        let panel = NSSavePanel()
+        panel.directoryURL = file.url.deletingLastPathComponent()
+        panel.nameFieldStringValue = file.url.lastPathComponent
+        panel.prompt = String(localized: "Move")
+        panel.message = String(localized: "Literal file references will be updated as unsaved edits. Review and save the project; computed paths may need manual changes.")
+        guard panel.runModal() == .OK, let destination = panel.url else { return }
+        do { try workspace.move(file.url, to: destination) }
+        catch { workspace.error = error.localizedDescription }
+    }
+
+    private func trashItem() {
+        guard canManageItem else { return }
+        let alert = NSAlert()
+        alert.messageText = String(localized: "Move to Trash") + ": " + file.url.lastPathComponent
+        let dirty = workspace.buffers.contains { ($0.url == file.url || $0.url.path.hasPrefix(file.url.path + "/")) && $0.isDirty }
+        alert.informativeText = dirty
+            ? String(localized: "This item has unsaved edits. Save the project before moving it to Trash. References are not removed.")
+            : String(localized: "You can restore this item from Trash. References are not removed.")
+        alert.addButton(withTitle: dirty ? String(localized: "Save and Move to Trash") : String(localized: "Move to Trash"))
+        alert.addButton(withTitle: String(localized: "Cancel"))
+        guard alert.runModal() == .alertFirstButtonReturn else { return }
+        do {
+            if dirty { try workspace.saveAll() }
+            try FileManager.default.trashItem(at: file.url, resultingItemURL: nil)
+            try workspace.forgetRemovedItem(file.url)
+        } catch { workspace.error = error.localizedDescription }
     }
 
     private var rowLabel: some View {

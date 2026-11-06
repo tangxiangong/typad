@@ -46,7 +46,7 @@ fn current_source_overrides_disk_and_resources_refresh_between_compiles() {
     assert!(failed.pdf.is_none());
     let error = failed.diagnostics.iter().find(|d| !d.warning).unwrap();
     assert_eq!(error.file.as_deref(), Some("child.typ"));
-    assert_eq!(error.utf16_offset, None);
+    assert_eq!(error.utf16_offset, Some(1));
     std::fs::write(&child, "Repaired").unwrap();
     assert!(compile(source, Some(&main), 3).pdf.is_some());
 }
@@ -97,5 +97,28 @@ fn symlink_cannot_escape_document_directory() {
             .diagnostics
             .iter()
             .any(|d| d.message.contains("access denied"))
+    );
+}
+
+#[test]
+fn unsaved_child_diagnostic_uses_its_own_unicode_offset() {
+    let dir = tempfile::tempdir().unwrap();
+    let main = dir.path().join("main.typ");
+    let child = dir.path().join("child.typ");
+    std::fs::write(&child, "Valid disk content").unwrap();
+    let text = "😀 中文 #unknown_child";
+    let snapshots =
+        std::collections::HashMap::from([(child.to_string_lossy().into_owned(), text.to_owned())]);
+    let result = typad_core::compiler::compile_project(
+        "#include \"child.typ\"",
+        Some(&main),
+        Some(dir.path()),
+        &snapshots,
+        3,
+    );
+    let error = result.diagnostics.iter().find(|d| !d.warning).unwrap();
+    assert_eq!(
+        (error.file.as_deref(), error.utf16_offset),
+        (Some("child.typ"), Some(7))
     );
 }

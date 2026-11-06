@@ -75,6 +75,9 @@
 		ADAABB012345678900000005 = {isa = PBXBuildFile; fileRef = ACAABB012345678900000021; };
 		AEAABB012345678900000001 = {isa = PBXBuildFile; fileRef = AEAABB012345678900000002; };
 		AEAABB012345678900000003 = {isa = PBXBuildFile; fileRef = AEAABB012345678900000004; };
+		BC0000000000000000000001 /* ConflictView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC0000000000000000000002; };
+		BC0000000000000000000003 /* ProjectTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC0000000000000000000004; };
+		BC0000000000000000000005 /* WorkspaceRestoration.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC0000000000000000000006; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -154,6 +157,9 @@
 		ADAABB012345678900000004 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../ipad/Sources/TyPad/ProjectView.swift; sourceTree = SOURCE_ROOT; };
 		AEAABB012345678900000002 = {isa = PBXFileReference; lastKnownFileType = folder; path = ../ipad/Resources/Fonts; sourceTree = SOURCE_ROOT; };
 		AEAABB012345678900000004 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ../ipad/Sources/TyPad/TextChange.swift; sourceTree = SOURCE_ROOT; };
+		BC0000000000000000000002 /* ConflictView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TyPad/Sources/TyPad/ConflictView.swift; sourceTree = SOURCE_ROOT; };
+		BC0000000000000000000004 /* ProjectTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TyPad/Sources/TyPad/ProjectTemplate.swift; sourceTree = SOURCE_ROOT; };
+		BC0000000000000000000006 /* WorkspaceRestoration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TyPad/Sources/TyPad/WorkspaceRestoration.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -211,6 +217,9 @@
 				AABBCC012345678900000001 /* TyPad/Sources/TyPad/WelcomeView.swift */,
 				FEDCBA012345678900000011 /* TyPad/Sources/TyPad/LanguageModel.swift */,
 				ABAABB012345678900000011 /* TyPad/Sources/TyPad/ProjectWorkspace.swift */,
+				BC0000000000000000000002,
+				BC0000000000000000000004,
+				BC0000000000000000000006,
 				ABAABB012345678900000021 /* TyPad/Sources/TyPad/ProjectDocument.swift */,
 				ACAABB012345678900000011 /* TyPad/Sources/TyPad/FileIcon.swift */,
 				ACAABB012345678900000021 /* TyPad/Resources/Catppuccin-Icons-LICENSE.txt */,
@@ -504,6 +513,9 @@
 				AABBCC012345678900000002 /* TyPad/Sources/TyPad/WelcomeView.swift in Sources */,
 				FEDCBA012345678900000012 /* TyPad/Sources/TyPad/LanguageModel.swift in Sources */,
 				ABAABB012345678900000012 /* TyPad/Sources/TyPad/ProjectWorkspace.swift in Sources */,
+				BC0000000000000000000001,
+				BC0000000000000000000003,
+				BC0000000000000000000005,
 				ABAABB012345678900000022 /* TyPad/Sources/TyPad/ProjectDocument.swift in Sources */,
 				ACAABB012345678900000012 /* TyPad/Sources/TyPad/FileIcon.swift in Sources */,
 				ABAABB012345678900000032 /* TyPad/Sources/TyPad/ProjectNavigator.swift in Sources */,

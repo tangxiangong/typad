@@ -15,3 +15,9 @@ xcrun swiftc -parse-as-library -target arm64-apple-macosx13.0 \
     macos/TyPad/LogicTests/FileIconTests.swift \
     -o target/project-tests/icon-tests
 target/project-tests/icon-tests "$PWD"
+xcrun swiftc -parse-as-library -target arm64-apple-macosx13.0 \
+    -module-cache-path target/project-tests/cache \
+    macos/TyPad/Sources/TyPad/ProjectWorkspace.swift \
+    macos/TyPad/LogicTests/ProjectStageTests.swift \
+    -o target/project-tests/stage-tests
+target/project-tests/stage-tests

@@ -15,7 +15,9 @@ final class PreviewModel: ObservableObject {
     private var debounce: Task<Void, Never>?
     private var pending: Snapshot?
     // One isolated worker per document window; requests run serially inside it.
-    let worker = WorkerClient()
+    let worker: WorkerClient
+
+    init(worker: WorkerClient? = nil) { self.worker = worker ?? WorkerClient() }
 
     private struct Snapshot {
         let source: String
@@ -23,6 +25,13 @@ final class PreviewModel: ObservableObject {
         let revision: UInt64
         let root: String?
         let files: [String: String]
+    }
+
+    var canExport: Bool { pdf != nil && !isStale && !isCompiling }
+
+    func exportPDF(to url: URL, expectedRevision: UInt64) throws {
+        guard canExport, revision == expectedRevision, let pdf else { throw PreviewExportFailure.sourceChanged }
+        try pdf.write(to: url, options: .atomic)
     }
 
     func update(source: String, url: URL?, automatic: Bool, immediate: Bool = false, root: String? = nil, files: [String: String] = [:]) {
@@ -54,8 +63,19 @@ final class PreviewModel: ObservableObject {
         pending = nil
         isStale = true
         pdf = nil
+        pageCount = 0
         diagnostics = []
         status = String(localized: "Choose a main Typst document")
+    }
+
+    func cancel() {
+        revision &+= 1
+        debounce?.cancel()
+        pending = nil
+        isStale = true
+        worker.close()
+        worker.reopen()
+        status = String(localized: "Compilation cancelled")
     }
 
     func stop() {
@@ -92,4 +112,9 @@ final class PreviewModel: ObservableObject {
             startNext()
         }
     }
+}
+
+private enum PreviewExportFailure: LocalizedError {
+    case sourceChanged
+    var errorDescription: String? { String(localized: "The source changed. Compile again before exporting.") }
 }

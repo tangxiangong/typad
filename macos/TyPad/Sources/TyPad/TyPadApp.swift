@@ -2,7 +2,16 @@ import AppKit
 import SwiftUI
 
 @main
+@MainActor
+enum TyPadEntryPoint {
+    static func main() {
+        _ = TyPadApplication.shared
+        TyPadApp.main()
+    }
+}
+
 struct TyPadApp: App {
+    @NSApplicationDelegateAdaptor(ProjectSessionDelegate.self) private var sessionDelegate
     @Environment(\.openWindow) private var openWindow
     var body: some Scene {
         Window("Welcome to TyPad", id: "welcome") {
@@ -19,6 +28,11 @@ struct TyPadApp: App {
             TextEditingCommands()
             CommandGroup(after: .newItem) {
                 Button("New Project…") { ProjectDocument.createFolder() }
+                Menu("New Project from Template") {
+                    ForEach(ProjectTemplate.allCases, id: \.self) { template in
+                        Button(LocalizedStringKey(template.rawValue)) { ProjectDocument.createFolder(template: template) }
+                    }
+                }
                 Button("Open Project…") { ProjectDocument.chooseFolder() }
                     .keyboardShortcut("o", modifiers: [.command, .option])
             }

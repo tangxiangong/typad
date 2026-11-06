@@ -32,7 +32,10 @@ final class ProjectDocument: NSDocument {
         window.setContentSize(NSSize(width: 1180, height: 740))
         window.styleMask.insert([.resizable, .miniaturizable])
         window.title = workspace.root?.lastPathComponent ?? "TyPad"
-        window.center()
+        if let root = workspace.root {
+            window.setFrameAutosaveName("project:" + root.path)
+            if !window.setFrameUsingName("project:" + root.path) { window.center() }
+        }
         addWindowController(NSWindowController(window: window))
     }
 
@@ -60,6 +63,17 @@ final class ProjectDocument: NSDocument {
     override func close() {
         do { try workspace.clearRecovery() } catch { presentError(error) }
         super.close()
+        ProjectSessionDelegate.persist()
+    }
+
+    override func save(withDelegate delegate: Any?, didSave didSaveSelector: Selector?, contextInfo: UnsafeMutableRawPointer?) {
+        // A folder's timestamp tracks directory entries, not document contents. Each buffer
+        // is checked against its saved bytes by saveAll(), including during close/quit saves.
+        if let root = workspace.root, fileURL?.standardizedFileURL.resolvingSymlinksInPath() == root,
+           let date = try? root.resourceValues(forKeys: [.contentModificationDateKey]).contentModificationDate {
+            fileModificationDate = date
+        }
+        super.save(withDelegate: delegate, didSave: didSaveSelector, contextInfo: contextInfo)
     }
 
     override func saveAs(_ sender: Any?) { saveCopy() }
@@ -76,7 +90,7 @@ final class ProjectDocument: NSDocument {
         } catch { presentError(error) }
     }
 
-    static func createFolder() {
+    static func createFolder(template: ProjectTemplate = .blank) {
         let panel = NSSavePanel()
         panel.nameFieldStringValue = "Untitled Project"
         panel.prompt = String(localized: "Create Project")
@@ -86,7 +100,7 @@ final class ProjectDocument: NSDocument {
                 throw CocoaError(.fileWriteFileExists)
             }
             try FileManager.default.createDirectory(at: url, withIntermediateDirectories: false)
-            try Data("= New document\n\n".utf8).write(to: url.appendingPathComponent("main.typ"), options: .withoutOverwriting)
+            try Data(template.source.utf8).write(to: url.appendingPathComponent("main.typ"), options: .withoutOverwriting)
             openFolder(url)
         } catch { NSApp.presentError(error) }
     }
@@ -99,6 +113,15 @@ final class ProjectDocument: NSDocument {
         panel.prompt = String(localized: "Open")
         guard panel.runModal() == .OK, let url = panel.url else { return }
         openFolder(url)
+    }
+
+    static var pinnedFolders: [URL] {
+        (UserDefaults.standard.stringArray(forKey: "pinnedProjectFolders") ?? []).map { URL(fileURLWithPath: $0) }
+    }
+    static func togglePin(_ url: URL) {
+        var paths = pinnedFolders.map(\.path)
+        if paths.contains(url.path) { paths.removeAll { $0 == url.path } } else { paths.append(url.path) }
+        UserDefaults.standard.set(paths, forKey: "pinnedProjectFolders")
     }
 
     static var recentFolders: [URL] {
@@ -117,6 +140,7 @@ final class ProjectDocument: NSDocument {
             NSDocumentController.shared.addDocument(document)
             document.makeWindowControllers()
             document.showWindows()
+            ProjectSessionDelegate.persist()
             let recent = [root.path] + recentFolders.map(\.path).filter { $0 != root.path }
             UserDefaults.standard.set(Array(recent.prefix(20)), forKey: "recentProjectFolders")
         } catch { NSApp.presentError(error) }

@@ -60,7 +60,7 @@ struct WelcomeView: View {
                             ForEach(filtered, id: \.self) { url in
                                 Button { open(url) } label: {
                                     HStack(spacing: 12) {
-                                        Image(systemName: ProjectDocument.recentFolders.contains(url) ? "folder" : "doc.text")
+                                        Image(systemName: (ProjectDocument.recentFolders + ProjectDocument.pinnedFolders).contains(url) ? "folder" : "doc.text")
                                             .font(.system(size: 24, weight: .regular))
                                             .foregroundStyle(.secondary).frame(width: 30, height: 30)
                                         VStack(alignment: .leading, spacing: 4) {
@@ -69,10 +69,20 @@ struct WelcomeView: View {
                                                 .font(.caption).foregroundStyle(.secondary).lineLimit(1).truncationMode(.middle)
                                         }
                                         Spacer()
+                                        if ProjectDocument.pinnedFolders.contains(url) {
+                                            Image(systemName: "pin.fill").accessibilityLabel("Pinned Project")
+                                        }
                                         if opening == url { ProgressView().controlSize(.small) }
                                     }.padding(.horizontal, 14).padding(.vertical, 10).contentShape(Rectangle())
                                 }
                                 .buttonStyle(.plain).disabled(opening != nil).help(url.path)
+                                .contextMenu {
+                                    if (ProjectDocument.recentFolders + ProjectDocument.pinnedFolders).contains(url) {
+                                        Button(ProjectDocument.pinnedFolders.contains(url) ? "Unpin Project" : "Pin Project") {
+                                            ProjectDocument.togglePin(url); refresh()
+                                        }
+                                    }
+                                }
                             }
                         }.padding(8)
                     }
@@ -105,9 +115,13 @@ struct WelcomeView: View {
         }.padding(.vertical, 6).contentShape(Rectangle())
     }
 
-    private func refresh() { recent = ProjectDocument.recentFolders + NSDocumentController.shared.recentDocumentURLs.filter { !ProjectDocument.recentFolders.contains($0) } }
+    private func refresh() {
+        let all = ProjectDocument.pinnedFolders + ProjectDocument.recentFolders + NSDocumentController.shared.recentDocumentURLs
+        var seen = Set<URL>()
+        recent = all.filter { seen.insert($0).inserted }
+    }
     private func open(_ url: URL) {
-        if ProjectDocument.recentFolders.contains(url) { ProjectDocument.openFolder(url); refresh(); return }
+        if (ProjectDocument.recentFolders + ProjectDocument.pinnedFolders).contains(url) { ProjectDocument.openFolder(url); refresh(); return }
         opening = url
         NSDocumentController.shared.openDocument(withContentsOf: url, display: true) { _, _, failure in
             DispatchQueue.main.async {

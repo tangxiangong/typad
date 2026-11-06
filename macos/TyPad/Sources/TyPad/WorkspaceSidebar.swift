@@ -27,6 +27,7 @@ struct WorkspaceSidebar: View {
     let diagnostics: [WorkerDiagnostic]
     @Binding var issues: Bool
     let navigate: (Int) -> Void
+    let navigateIssue: (WorkerDiagnostic) -> Void
 
     var body: some View {
         VStack(spacing: 0) {
@@ -44,7 +45,7 @@ struct WorkspaceSidebar: View {
                 } else {
                     List(Array(diagnostics.enumerated()), id: \.offset) { _, diagnostic in
                         Button {
-                            if let offset = diagnostic.utf16Offset { navigate(Int(offset)) }
+                            navigateIssue(diagnostic)
                         } label: {
                             HStack(alignment: .top, spacing: 8) {
                                 Image(systemName: diagnostic.warning ? "exclamationmark.triangle" : "xmark.circle")
@@ -52,7 +53,7 @@ struct WorkspaceSidebar: View {
                                 VStack(alignment: .leading, spacing: 5) {
                                     Text(diagnostic.message).font(.callout).lineLimit(4)
                                     if let file = diagnostic.file {
-                                        Text("\(file):\(diagnostic.line ?? 1)").font(.caption).foregroundStyle(.secondary)
+                                        Text("\(file):\(diagnostic.line ?? 1):\(diagnostic.column ?? 1)").font(.caption).foregroundStyle(.secondary)
                                     }
                                 }
                             }.padding(.vertical, 4).contentShape(Rectangle())

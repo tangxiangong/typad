@@ -20,6 +20,21 @@ struct WorkerDiagnostic: Decodable {
     let column: UInt64?
     let utf16Offset: UInt64?
 }
+extension WorkerDiagnostic {
+    func destination(root: URL?, main: URL?) -> URL? {
+        guard let file, !file.isEmpty else { return main }
+        guard let root, !file.hasPrefix("@"), !file.hasPrefix("/"),
+              !file.split(separator: "/").contains("..") else { return nil }
+        let url = root.appendingPathComponent(file).standardizedFileURL.resolvingSymlinksInPath()
+        return url.path.hasPrefix(root.standardizedFileURL.resolvingSymlinksInPath().path + "/") ? url : nil
+    }
+}
+
+@MainActor
+enum DiagnosticNavigation {
+    static var pending: [URL: Int] = [:]
+}
+
 struct WorkerResult: Decodable {
     let pdf: Data?
     let pageCount: UInt64?
@@ -78,6 +93,7 @@ final class WorkerClient {
     private var nextID: UInt64 = 0
     private var generation = UUID()
     private var closed = false
+    private var cancellationEpoch: UInt64 = 0
 
     init(executable: URL? = Bundle.main.executableURL?.deletingLastPathComponent().appendingPathComponent("typad-worker"), timeoutSeconds: UInt64 = 60) {
         self.executable = executable
@@ -85,11 +101,12 @@ final class WorkerClient {
     }
 
     func request(operation: String, source: String, path: String?, revision: UInt64, offset: Int = 0, root: String? = nil, files: [String: String] = [:]) async throws -> WorkerResult {
+        let epoch = cancellationEpoch
         // One bounded automatic restart, always resending the full unsaved snapshot.
         for attempt in 0...1 {
             do { return try await send(operation: operation, source: source, path: path, revision: revision, offset: offset, root: root, files: files) }
             catch {
-                if closed || Task.isCancelled { throw CancellationError() }
+                if closed || cancellationEpoch != epoch || Task.isCancelled { throw CancellationError() }
                 if case WorkerFailure.operation = error { throw error }
                 if case WorkerFailure.unavailable = error { throw error }
                 if attempt == 1 { throw error }
@@ -101,6 +118,7 @@ final class WorkerClient {
     func reopen() { closed = false }
 
     func close() {
+        cancellationEpoch &+= 1
         closed = true
         fail(WorkerFailure.disconnected)
     }
